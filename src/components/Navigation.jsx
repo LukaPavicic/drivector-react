@@ -4,12 +4,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import HomeIcon from '@material-ui/icons/Home';
-import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
-import { List, ListItem, ListItemIcon, ListItemText, Icon, Badge, Divider } from '@material-ui/core';
-import { Help, MonetizationOn } from '@material-ui/icons';
+// import IconButton from '@material-ui/core/IconButton';
+// import HomeIcon from '@material-ui/icons/Home';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import Drawer from '@material-ui/core/Drawer';
+// import { List, ListItem, ListItemIcon, ListItemText, Icon, Badge, Divider } from '@material-ui/core';
+// import { Help, MonetizationOn } from '@material-ui/icons';
+import { Link } from 'react-router-dom'
 
 const styles = theme => ({
   root: {
@@ -20,9 +21,16 @@ const styles = theme => ({
   },
   title: {
     flexGrow: 1,
+    '& a': {
+      color: "white",
+      textDecoration: "none",
+    }
   },
   appBar: {
       backgroundColor: "#27ae60",
+      '& a': {
+        color: "white"
+      }
   },
   fullList: {
     width: 250,
@@ -58,17 +66,19 @@ class Navigation extends React.Component {
       <div className={classes.root}>
         <AppBar className={classes.appBar} position="fixed">
           <Toolbar>
-            <IconButton onClick={this._toggleDrawer} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            {/* <IconButton onClick={this._toggleDrawer} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}            
             <Typography variant="h6" className={classes.title}>
-              Drivector
+              <Link to="/">
+                Drivector
+              </Link>              
             </Typography>
-            <Button color="inherit">Login</Button>
-            <Button color="inherit">Register</Button>
+            <Link to="/"><Button color="inherit">Login</Button></Link>
+            <Link to="/register"><Button color="inherit">Register</Button></Link>
           </Toolbar>
         </AppBar>
-        <Drawer open={this.state.leftDrawerOpen} onClose={this._toggleDrawer}>
+        {/* <Drawer open={this.state.leftDrawerOpen} onClose={this._toggleDrawer}>
           <div className={classes.fullList}>            
             <List>
               <ListItem>     
@@ -95,7 +105,7 @@ class Navigation extends React.Component {
               </ListItem>
             </List>
           </div>
-        </Drawer>
+        </Drawer> */}
       </div>
     );
   }

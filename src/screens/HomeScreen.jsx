@@ -232,7 +232,7 @@ class HomeScreen extends React.Component {
                                         <CardContent align="center">
                                             <Typography align="center" variant="h6">Low Price For VTCs</Typography>
                                             <Icon className={classes.featureIcon} fontSize="inherit" component={AttachMoney} />
-                                            <Typography>Running a VTC under 10 employees is FREE! Onwards starts from $2/month.</Typography>
+                                            <Typography>Running a VTC under 10 employees is FREE! Onwards starts from $5/month.</Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
