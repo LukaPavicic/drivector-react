@@ -62,7 +62,7 @@ class Navigation extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              VTC Drivers Hub
+              Drivector
             </Typography>
             <Button color="inherit">Login</Button>
             <Button color="inherit">Register</Button>
@@ -73,7 +73,7 @@ class Navigation extends React.Component {
             <List>
               <ListItem>     
                 <Badge anchorOrigin={{ vertical: 'bottom', horizontal: 'right',}} badgeContent={"v0.1"}>
-                  <Typography className={classes.mainColor} variant="h6">VTC Drivers Hub</Typography>
+                  <Typography className={classes.mainColor} variant="h6">Drivector</Typography>
                 </Badge>                           
               </ListItem>
 
