@@ -56,7 +56,7 @@ const styles = theme => ({
   }
 });
 
-class RegisterScreen extends React.Component {
+class LoginScreen extends React.Component {
 
   render() {
 
@@ -79,82 +79,10 @@ class RegisterScreen extends React.Component {
           <div className={classes.paper}>
             {/* LOGO GOES HERE */}
             <Typography component="h1" variant="h5">
-              Register
+              Login
             </Typography>
             <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField                  
-                    name="username"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Username"
-                    autoFocus
-                    color="primary"                  
-                    id="validation-outlined-input"
-                    InputLabelProps={{
-                      classes: {      
-                        root: classes.inputLabel,                                                          
-                        focused: classes.cssFocused,
-                      },
-                    }}
-                    InputProps={{
-                      classes: {
-                        root: classes.textOutlineInput,
-                        focused: classes.cssFocused,
-                        notchedOutline: classes.notchedOutline,
-                      },                    
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField                  
-                    name="tmplink"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="tmplink"
-                    label="TruckersMP Profile Link"  
-                    InputLabelProps={{
-                      classes: {      
-                        root: classes.inputLabel,                                                          
-                        focused: classes.cssFocused,
-                      },
-                    }}
-                    InputProps={{
-                      classes: {
-                        root: classes.textOutlineInput,
-                        focused: classes.cssFocused,
-                        notchedOutline: classes.notchedOutline,
-                      },                    
-                    }}            
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="steamlink"
-                    label="Steam Profile Link"
-                    name="steamprofilelink"    
-                    InputLabelProps={{
-                      classes: {      
-                        root: classes.inputLabel,                                                          
-                        focused: classes.cssFocused,
-                      },
-                    }}
-                    InputProps={{
-                      classes: {
-                        root: classes.textOutlineInput,
-                        focused: classes.cssFocused,
-                        notchedOutline: classes.notchedOutline,
-                      },                    
-                    }}              
-                  />
-                </Grid>
+              <Grid container spacing={2}>                
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -203,37 +131,7 @@ class RegisterScreen extends React.Component {
                       },                    
                     }}
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="age"
-                    label="Age"
-                    type="number"
-                    id="age"  
-                    InputLabelProps={{
-                      classes: {      
-                        root: classes.inputLabel,                                                          
-                        focused: classes.cssFocused,
-                      },
-                    }}
-                    InputProps={{
-                      classes: {
-                        root: classes.textOutlineInput,
-                        focused: classes.cssFocused,
-                        notchedOutline: classes.notchedOutline,
-                      },                    
-                    }}              
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox value="allowExtraEmails" color="primary"/>}
-                    label="I have read and I agree to Terms Of Use."
-                  />
-                </Grid>
+                </Grid>                
               </Grid>
               <Button
                 type="submit"
@@ -242,12 +140,12 @@ class RegisterScreen extends React.Component {
                 color="primary"
                 className={classes.submit}
               >
-                Sign Up
+              Login
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link to="/login" variant="body2">
-                    Already have an account? Sign in
+                  <Link to="/register" variant="body2">
+                    Don't have an account? Register.
                   </Link>
                 </Grid>
               </Grid>
@@ -262,4 +160,4 @@ class RegisterScreen extends React.Component {
   }
 }
 
-export default withStyles(styles)(RegisterScreen)
+export default withStyles(styles)(LoginScreen)
