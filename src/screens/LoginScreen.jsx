@@ -14,6 +14,7 @@ import { withStyles, createMuiTheme, ThemeProvider, MuiThemeProvider } from '@ma
 import Copyright from '../components/Copyright'
 import Navigation from '../components/Navigation'
 import { Link } from 'react-router-dom'
+import Logo from '../img/logogreenwide.png'
 
 const styles = theme => ({
   paper: {
@@ -53,6 +54,9 @@ const styles = theme => ({
   },
   registerButton: {
     backgroundColor: "#27ae60",
+  },
+  registerButtonForm: {
+    color: "#27ae60",
   }
 });
 
@@ -77,7 +81,7 @@ class LoginScreen extends React.Component {
           <Navigation/>
           <CssBaseline />
           <div className={classes.paper}>
-            {/* LOGO GOES HERE */}
+            <img src={Logo} style={{maxWidth: 250}}/>
             <Typography component="h1" variant="h5">
               Login
             </Typography>
@@ -144,7 +148,7 @@ class LoginScreen extends React.Component {
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link to="/register" variant="body2">
+                  <Link to="/register" variant="body2" className={classes.registerButtonForm}>
                     Don't have an account? Register.
                   </Link>
                 </Grid>

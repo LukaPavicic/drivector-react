@@ -7,13 +7,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { withStyles, createMuiTheme, ThemeProvider, MuiThemeProvider } from '@material-ui/core/styles'
 import Copyright from '../components/Copyright'
 import Navigation from '../components/Navigation'
 import { Link } from 'react-router-dom'
+import Logo from '../img/logogreenwide.png'
 
 const styles = theme => ({
   paper: {
@@ -53,6 +53,9 @@ const styles = theme => ({
   },
   registerButton: {
     backgroundColor: "#27ae60",
+  },
+  registerButtonForm: {
+    color: "#27ae60",
   }
 });
 
@@ -77,7 +80,7 @@ class RegisterScreen extends React.Component {
           <Navigation/>
           <CssBaseline />
           <div className={classes.paper}>
-            {/* LOGO GOES HERE */}
+            <img src={Logo} style={{maxWidth: 250}}/>
             <Typography component="h1" variant="h5">
               Register
             </Typography>
@@ -246,7 +249,7 @@ class RegisterScreen extends React.Component {
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link to="/login" variant="body2">
+                  <Link to="/login" variant="body2" className={classes.registerButtonForm}>
                     Already have an account? Sign in
                   </Link>
                 </Grid>

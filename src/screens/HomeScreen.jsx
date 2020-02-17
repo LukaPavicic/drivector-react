@@ -5,6 +5,7 @@ import WelcomeSectionImage from '../img/multipletrucks.jpg'
 import OrganizeEventsImage from '../img/multipletrucks.jpg'
 import DeliveryImage from '../img/delivery.jpg'
 import ForumImage from '../img/forum.jpg'
+import Copyright from '../components/Copyright'
 import { Container, Grid, Typography, Button, Icon, Card, CardContent, CardActions, CardHeader, CssBaseline, Toolbar, Link, Box } from '@material-ui/core';
 import { ArrowDownward, MoneyOff, AttachMoney, Tune, Equalizer, Star } from '@material-ui/icons'
 
@@ -360,14 +361,7 @@ class HomeScreen extends React.Component {
                     ))}
                     </Grid>
                     <Box mb={3}>
-                        <Typography variant="body2" color="textSecondary" align="center">
-                        {'Copyright © '}
-                        <Link color="inherit" href="https://material-ui.com/">
-                            Drivector
-                        </Link>{' '}
-                        {new Date().getFullYear()}
-                        {'.'}
-                        </Typography>
+                        <Copyright />
                     </Box>
                 </Container>
 
