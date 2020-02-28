@@ -1,19 +1,18 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { withStyles, createMuiTheme, ThemeProvider, MuiThemeProvider } from '@material-ui/core/styles'
+import { withStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Copyright from '../components/Copyright'
 import Navigation from '../components/Navigation'
 import { Link } from 'react-router-dom'
 import Logo from '../img/logogreenwide.png'
+import axios from 'axios';
+import { ROOT_API } from '../api_endpoint.js';
 
 const styles = theme => ({
   paper: {
@@ -61,9 +60,86 @@ const styles = theme => ({
 
 class RegisterScreen extends React.Component {
 
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email_input: "",
+      password_input: "",
+      password_confirmation_input: "",
+      tmp_profile_link_input: "",
+      steam_profile_link_input: "",
+      age_input: null,
+      username_input: "",
+    }
+  }
 
-    const { classes } = this.props
+  _handleEmailChange = (e) => {
+    this.setState({
+      email_input: e.target.value
+    })
+  };
+
+  _handlePasswordChange = (e) => {
+    this.setState({
+      password_input: e.target.value
+    })
+  };
+
+  _handleTmpChange = (e) => {
+    this.setState({
+      tmp_profile_link_input: e.target.value
+    })
+  };
+
+  _handleSteamChange = (e) => {
+    this.setState({
+      steam_profile_link_input: e.target.value
+    })
+  };
+
+  _handlePasswordConfirmationChange = (e) => {
+    this.setState({
+      password_confirmation_input: e.target.value
+    })
+  };
+
+  _handleAgeChange = (e) => {
+    this.setState({
+      age_input: e.target.value
+    })
+  };
+
+  _handleUsernameChange = (e) => {
+    this.setState({
+      username_input: e.target.value
+    })
+  };
+
+  _register = () => {
+    // send register request to server
+    axios.post(`${ROOT_API}/v1/user/register`, {
+      "user": {
+        "username": this.state.username_input,
+        "email": this.state.email_input,
+        "password": this.state.password_input,
+        "password_confirmation": this.state.password_confirmation_input,
+        "tmp_profile_link": this.state.tmp_profile_link_input,
+        "steam_profile_link": this.state.steam_profile_link_input,
+        "age": this.state.age_input
+      }
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      console.log(res.data);
+    }).catch(err => {
+      console.log(err);
+    })
+  };
+
+  render() {
+    const { classes } = this.props;
 
     const theme = createMuiTheme({
       pallete: {
@@ -72,7 +148,7 @@ class RegisterScreen extends React.Component {
           contrastText: "#fff",
         }
       }
-    })
+    });
 
     return (
       <ThemeProvider theme={theme}>
@@ -80,7 +156,7 @@ class RegisterScreen extends React.Component {
           <Navigation/>
           <CssBaseline />
           <div className={classes.paper}>
-            <img src={Logo} style={{maxWidth: 250}}/>
+            <img alt={"logo"} src={Logo} style={{maxWidth: 250}}/>
             <Typography component="h1" variant="h5">
               Register
             </Typography>
@@ -90,6 +166,8 @@ class RegisterScreen extends React.Component {
                   <TextField                  
                     name="username"
                     variant="outlined"
+                    value={this.state.username}
+                    onChange={this._handleUsernameChange}
                     required
                     fullWidth
                     id="username"
@@ -116,6 +194,8 @@ class RegisterScreen extends React.Component {
                   <TextField                  
                     name="tmplink"
                     variant="outlined"
+                    value={this.state.tmp_profile_link_input}
+                    onChange={this._handleTmpChange}
                     required
                     fullWidth
                     id="tmplink"
@@ -140,6 +220,8 @@ class RegisterScreen extends React.Component {
                     variant="outlined"
                     required
                     fullWidth
+                    value={this.state.steam_profile_link_input}
+                    onChange={this._handleSteamChange}
                     id="steamlink"
                     label="Steam Profile Link"
                     name="steamprofilelink"    
@@ -162,6 +244,8 @@ class RegisterScreen extends React.Component {
                   <TextField
                     variant="outlined"
                     required
+                    value={this.state.email_input}
+                    onChange={this._handleEmailChange}
                     fullWidth
                     id="email"
                     label="Email Address"
@@ -189,6 +273,8 @@ class RegisterScreen extends React.Component {
                     fullWidth
                     name="password"
                     label="Password"
+                    value={this.state.password_input}
+                    onChange={this._handlePasswordChange}
                     type="password"
                     id="password"
                     autoComplete="current-password"
@@ -209,10 +295,38 @@ class RegisterScreen extends React.Component {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="password_confirmation"
+                      label="Password Confirmation"
+                      value={this.state.password_confirmation_input}
+                      onChange={this._handlePasswordConfirmationChange}
+                      type="password"
+                      id="password_confirmation"
+                      InputLabelProps={{
+                        classes: {
+                          root: classes.inputLabel,
+                          focused: classes.cssFocused,
+                        },
+                      }}
+                      InputProps={{
+                        classes: {
+                          root: classes.textOutlineInput,
+                          focused: classes.cssFocused,
+                          notchedOutline: classes.notchedOutline,
+                        },
+                      }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
                     variant="outlined"
                     required
                     fullWidth
                     name="age"
+                    value={this.state.age}
+                    onChange={this._handleAgeChange}
                     label="Age"
                     type="number"
                     id="age"  
@@ -232,18 +346,17 @@ class RegisterScreen extends React.Component {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox value="allowExtraEmails" color="primary"/>}
-                    label="I have read and I agree to Terms Of Use."
-                  />
+                  <Typography>
+                    By signing up you agree to our <Link style={{color: "#27ae60"}} to={"/"}>Terms Of Use</Link>.
+                  </Typography>
                 </Grid>
               </Grid>
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={this._register}
               >
                 Sign Up
               </Button>

@@ -6,8 +6,8 @@ import OrganizeEventsImage from '../img/multipletrucks.jpg'
 import DeliveryImage from '../img/delivery.jpg'
 import ForumImage from '../img/forum.jpg'
 import Copyright from '../components/Copyright'
-import { Container, Grid, Typography, Button, Icon, Card, CardContent, CardActions, CardHeader, CssBaseline, Toolbar, Link, Box } from '@material-ui/core';
-import { ArrowDownward, MoneyOff, AttachMoney, Tune, Equalizer, Star } from '@material-ui/icons'
+import { Container, Grid, Typography, Button, Icon, Card, CardContent, CardActions, CardHeader, Link, Box } from '@material-ui/core';
+import { ArrowDownward, MoneyOff, AttachMoney, Tune, Star } from '@material-ui/icons'
 
 const styles = theme => ({
     root: {
@@ -148,7 +148,7 @@ theme = responsiveFontSizes(theme);
 class HomeScreen extends React.Component {
     render() {
 
-        const { classes } = this.props
+        const { classes } = this.props;
 
         const tiers = [
             {
@@ -211,7 +211,7 @@ class HomeScreen extends React.Component {
 
                             <Grid container spacing={5} className={classes.welcomeFeaturesContainer}>
                                 <Grid item sm={4} xs={12}>
-                                    <Card elevation={3} className={classes.Card} height={200}>
+                                    <Card elevation={3} height={200}>
                                         <CardContent align="center">
                                             <Typography align="center" variant="h6">Free For Users</Typography>
                                             <Icon className={classes.featureIcon} fontSize="inherit" component={MoneyOff} />
@@ -220,7 +220,7 @@ class HomeScreen extends React.Component {
                                     </Card>
                                 </Grid>
                                 <Grid item sm={4} xs={12}>
-                                    <Card elevation={3} className={classes.Card}>
+                                    <Card elevation={3}>
                                         <CardContent align="center">
                                             <Typography align="center" variant="h6">Highly Customizable</Typography>
                                             <Icon className={classes.featureIcon} fontSize="inherit" component={Tune} />
@@ -229,7 +229,7 @@ class HomeScreen extends React.Component {
                                     </Card>
                                 </Grid>
                                 <Grid item sm={4} xs={12}>
-                                    <Card elevation={3} className={classes.Card}>
+                                    <Card elevation={3}>
                                         <CardContent align="center">
                                             <Typography align="center" variant="h6">Low Price For VTCs</Typography>
                                             <Icon className={classes.featureIcon} fontSize="inherit" component={AttachMoney} />
@@ -258,7 +258,7 @@ class HomeScreen extends React.Component {
                                     </Typography>
                                 </Grid>
                                 <Grid xs={12} sm={4} item className={classes.featureImageWrapper}>
-                                    <img src={DeliveryImage} width="100%" className={classes.featureImage}/>
+                                    <img alt={"delivery"} src={DeliveryImage} width="100%" className={classes.featureImage}/>
                                 </Grid>
                             </Grid>
                             <Grid container className={classes.featureRow}>
@@ -269,7 +269,7 @@ class HomeScreen extends React.Component {
                                     </Typography>
                                 </Grid>
                                 <Grid xs={12} sm={4} item className={classes.featureImageWrapper}>
-                                    <img src={OrganizeEventsImage} width="100%" className={classes.featureImage}/>
+                                    <img alt={"organize events"} src={OrganizeEventsImage} width="100%" className={classes.featureImage}/>
                                 </Grid>
                             </Grid>
                             <Grid container className={classes.featureRow}>
@@ -281,7 +281,7 @@ class HomeScreen extends React.Component {
                                     </Typography>
                                 </Grid>
                                 <Grid xs={12} sm={4} item className={classes.featureImageWrapper}>
-                                    <img src={ForumImage} width="100%" className={classes.featureImage}/>
+                                    <img alt={"forum"} src={ForumImage} width="100%" className={classes.featureImage}/>
                                 </Grid>
                             </Grid>
                             <Typography align="center" variant="h5">And many more features to explore...</Typography>
@@ -296,7 +296,6 @@ class HomeScreen extends React.Component {
                         </ThemeProvider>
                         <Grid container spacing={5} alignItems="flex-end">
                         {tiers.map(tier => (
-                            // Enterprise card is full width at sm breakpoint
                             <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
                             <Card>
                                 <CardHeader
@@ -370,4 +369,4 @@ class HomeScreen extends React.Component {
     }
 }
 
-export default withStyles(styles)(HomeScreen)
+export default withStyles(styles)(HomeScreen);
