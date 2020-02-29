@@ -1,5 +1,5 @@
 let backendHost;
-let ngrok_host = "https://9cd1ad3c.ngrok.io";
+let ngrok_host = "http://localhost:3000";
 const hostname = window && window.location && window.location.hostname;
 
 if(hostname === "drivector.com") {

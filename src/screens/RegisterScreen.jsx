@@ -9,10 +9,11 @@ import Container from '@material-ui/core/Container';
 import { withStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Copyright from '../components/Copyright'
 import Navigation from '../components/Navigation'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import Logo from '../img/logogreenwide.png'
 import axios from 'axios';
 import { ROOT_API } from '../api_endpoint.js';
+import { Alert } from '@material-ui/lab';
 
 const styles = theme => ({
   paper: {
@@ -70,6 +71,7 @@ class RegisterScreen extends React.Component {
       steam_profile_link_input: "",
       age_input: null,
       username_input: "",
+      missing_fields: []
     }
   }
 
@@ -117,7 +119,7 @@ class RegisterScreen extends React.Component {
 
   _register = () => {
     // send register request to server
-    axios.post(`${ROOT_API}/v1/user/register`, {
+    axios.post(`${ROOT_API}/v1/users/register`, {
       "user": {
         "username": this.state.username_input,
         "email": this.state.email_input,
@@ -133,8 +135,16 @@ class RegisterScreen extends React.Component {
       }
     }).then(res => {
       console.log(res.data);
+      let state = {
+        success_register: true,
+        created_user_email: res.data.user.email
+      };
+      this.props.history.push('/login', state);
     }).catch(err => {
-      console.log(err);
+      this.setState({
+        missing_fields: Object.keys(err.response.data)
+      });
+      console.log(this.state.missing_fields);
     })
   };
 
@@ -160,6 +170,9 @@ class RegisterScreen extends React.Component {
             <Typography component="h1" variant="h5">
               Register
             </Typography>
+            {(this.state.missing_fields.length > 0) ?
+              <Alert style={{marginTop: "20px"}} severity={"error"}>Please fill out the following fields: {this.state.missing_fields.map(m => {return `${m}, `})}</Alert>
+             : null}
             <form className={classes.form} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -378,4 +391,4 @@ class RegisterScreen extends React.Component {
   }
 }
 
-export default withStyles(styles)(RegisterScreen)
+export default withRouter(withStyles(styles)(RegisterScreen))
