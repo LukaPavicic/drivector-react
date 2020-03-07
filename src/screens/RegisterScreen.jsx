@@ -69,7 +69,7 @@ class RegisterScreen extends React.Component {
       password_confirmation_input: "",
       tmp_profile_link_input: "",
       steam_profile_link_input: "",
-      age_input: null,
+      birth_date_input: null,
       username_input: "",
       missing_fields: []
     }
@@ -105,9 +105,9 @@ class RegisterScreen extends React.Component {
     })
   };
 
-  _handleAgeChange = (e) => {
+  _handleBirthDateChange = (e) => {
     this.setState({
-      age_input: e.target.value
+      birth_date_input: e.target.value
     })
   };
 
@@ -127,7 +127,7 @@ class RegisterScreen extends React.Component {
         "password_confirmation": this.state.password_confirmation_input,
         "tmp_profile_link": this.state.tmp_profile_link_input,
         "steam_profile_link": this.state.steam_profile_link_input,
-        "age": this.state.age_input
+        "birth_date": this.state.birth_date_input
       }
     }, {
       headers: {
@@ -338,26 +338,28 @@ class RegisterScreen extends React.Component {
                     required
                     fullWidth
                     name="age"
-                    value={this.state.age}
-                    onChange={this._handleAgeChange}
-                    label="Age"
-                    type="number"
-                    id="age"  
+                    value={this.state.birth_date_input}
+                    onChange={this._handleBirthDateChange}
+                    label="Birthday"
+                    type="date"
+                    id="date"
                     InputLabelProps={{
-                      classes: {      
-                        root: classes.inputLabel,                                                          
+                      classes: {
+                        root: classes.inputLabel,
                         focused: classes.cssFocused,
                       },
+                      shrink: true
                     }}
                     InputProps={{
                       classes: {
                         root: classes.textOutlineInput,
                         focused: classes.cssFocused,
                         notchedOutline: classes.notchedOutline,
-                      },                    
-                    }}              
+                      },
+                    }}
                   />
                 </Grid>
+
                 <Grid item xs={12}>
                   <Typography>
                     By signing up you agree to our <Link style={{color: "#27ae60"}} to={"/"}>Terms Of Use</Link>.

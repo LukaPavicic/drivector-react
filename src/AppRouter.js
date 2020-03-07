@@ -1,39 +1,47 @@
-import React, {useReducer, useContext} from 'react'
+import React, {useReducer, useContext, useState} from 'react'
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
-import { Context, reducer, initialState } from "./store";
+import {Context, reducer, initialState, useAuth} from "./store";
 
 import HomeScreen from './screens/HomeScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import LoginScreen from './screens/LoginScreen'
 import DashboardScreen from "./screens/Authorized/DashboardScreen";
+import NotchedOutline from "@material-ui/core/OutlinedInput/NotchedOutline";
 
-function GuardedRoute(access_token) {
-    return function ({component: Component, ...rest}) {
-        return (
-            <Route
-                {...rest}
-                render={props => {
-                    return !!access_token ? <Component {...props} /> : <Redirect to={"/login"}/>;
-                }
-                }
-            />
-        )
-    }
+function PrivateRoute({component: Component, ...rest}) {
+    const { authToken } = useAuth();
+
+    return (
+        <Route {...rest} render={props => (authToken === "undefined" || typeof authToken === "undefined" || authToken.length === 0) ? (
+            <Redirect to={"/login"}/>
+        ) : (<Component {...props}/>)} />
+    )
 }
 
-function AppRouter() {
-    const [store, dispatch] = useReducer(reducer, initialState);
-    const access_token = store.access_token;
-    console.log(access_token);
-    const AuthenticatedRoute = GuardedRoute(access_token);
+function NoAuthOnlyRoute({component: Component, ...rest}) {
+    const { authToken } = useAuth();
+
     return (
-        <Context.Provider value={{store, dispatch}}>
+        <Route {...rest} render={props => (authToken === "undefined" || typeof authToken === "undefined" || authToken.length === 0) ? (<Component {...props}/>) : (<Redirect to={"/dashboard"}/>)}/>
+    )
+}
+
+function AppRouter(props) {
+    const [authToken, setAuthToken] = useState(localStorage.getItem("tokens" || ""));
+
+    const setTokens = (data) => {
+        localStorage.setItem("tokens", JSON.stringify(data));
+        setAuthToken(data);
+    };
+
+    return (
+        <Context.Provider value={{authToken, setAuthToken: setTokens}}>
             <Router>
                 <Switch>
                     <Route exact path="/" component={HomeScreen}/>
-                    <Route exact path="/register" component={RegisterScreen}/>
-                    <Route exact path="/login" component={LoginScreen}/>
-                    <AuthenticatedRoute component={DashboardScreen} exact path={"/dashboard"}/>
+                    <NoAuthOnlyRoute exact path="/register" component={RegisterScreen}/>
+                    <NoAuthOnlyRoute exact path="/login" component={LoginScreen}/>
+                    <PrivateRoute component={DashboardScreen} exact path={"/dashboard"}/>
                 </Switch>
             </Router>
         </Context.Provider>

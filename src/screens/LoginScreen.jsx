@@ -9,12 +9,12 @@ import Container from '@material-ui/core/Container';
 import { createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import Copyright from '../components/Copyright'
 import Navigation from '../components/Navigation'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Logo from '../img/logogreenwide.png'
 import { Alert } from '@material-ui/lab'
 import {ROOT_API} from "../api_endpoint";
 import axios from 'axios';
-import {Context} from "../store";
+import { useAuth } from "../store";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -66,8 +66,8 @@ export default function LoginScreen(props) {
   const [passwordInput, setPasswordInput] = useState("");
   const [loginErrorMessage, setLoginErrorMessage] = useState("");
   const [createdUserEmail, setCreatedUserEmail] = useState("");
-
-  const { store, dispatch } = useContext(Context);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { setAuthToken } = useAuth();
 
   const _login = () => {
     axios.post(`${ROOT_API}/v1/users/login`, {
@@ -75,11 +75,12 @@ export default function LoginScreen(props) {
         "email": emailInput,
         "password": passwordInput
       }
-    }, {}).then(res => {
+    }, {
+    }).then(res => {
       console.log(res.data);
-      dispatch({type: 'SET_TOKEN', data: res.data.meta.access_token});
+      setAuthToken(res.data.meta.access_token);
+      setIsLoggedIn(true);
     }).catch(err => {
-      console.log(err.response);
       setLoginErrorMessage(err.response.data.message)
     })
   };
@@ -93,7 +94,6 @@ export default function LoginScreen(props) {
   };
 
   useEffect(() => {
-    console.log(store);
     if(typeof props.location.state !== "undefined") {
       if (typeof props.location.state.success_register === 'undefined' || props.location.state.success_register === null || props.location.state.success_register === false) {
         console.log("login");
@@ -114,6 +114,10 @@ export default function LoginScreen(props) {
       }
     }
   });
+
+  if(isLoggedIn) {
+    return <Redirect to={"/dashboard"}/>
+  }
 
   return (
     <ThemeProvider theme={theme}>
