@@ -38,7 +38,7 @@ function AppRouter(props) {
         <Context.Provider value={{authToken, setAuthToken: setTokens}}>
             <Router>
                 <Switch>
-                    <Route exact path="/" component={HomeScreen}/>
+                    <NoAuthOnlyRoute exact path="/" component={HomeScreen}/>
                     <NoAuthOnlyRoute exact path="/register" component={RegisterScreen}/>
                     <NoAuthOnlyRoute exact path="/login" component={LoginScreen}/>
                     <PrivateRoute component={DashboardScreen} exact path={"/dashboard"}/>
