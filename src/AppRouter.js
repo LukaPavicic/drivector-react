@@ -30,7 +30,7 @@ function AppRouter(props) {
     const [authToken, setAuthToken] = useState(localStorage.getItem("tokens" || ""));
 
     const setTokens = (data) => {
-        localStorage.setItem("tokens", JSON.stringify(data));
+        localStorage.setItem("tokens", data);
         setAuthToken(data);
     };
 

@@ -4,7 +4,7 @@ import Logo from '../img/logogreenwide.png'
 
 function Copyright() {
     return (
-        <div align="center">
+        <div align="center" style={{padding: "15px"}}>
             <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://drivector.com/">
