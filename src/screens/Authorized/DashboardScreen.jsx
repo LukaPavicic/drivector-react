@@ -49,6 +49,10 @@ export default function DashboardScreen(props) {
         })
     };
 
+    const _onClickCreateNewVtc = () => {
+      history.push("/vtc/new");
+    };
+
     useEffect(() => {
         console.log(authToken);
         _getLoggedInUserData();
@@ -80,7 +84,7 @@ export default function DashboardScreen(props) {
                             <Grid item xs={12} sm={6}>
                                 <Paper elevation={3} className={classes.topSectionLeft}>
                                     <Typography variant={"h4"}>Want to run your own VTC?</Typography>
-                                    <Button variant={"contained"} style={{backgroundColor: "#27ae60", color: "white", marginTop: "20px"}}>CREATE VTC NOW</Button>
+                                    <Button onClick={_onClickCreateNewVtc} to={"/vtc/new"} variant={"contained"} style={{backgroundColor: "#27ae60", color: "white", marginTop: "20px"}}>CREATE VTC NOW</Button>
                                     <Typography style={{marginTop: "10px"}}>Here is some more info:</Typography>
                                     <Grid container>
                                         <Grid className={classes.vtcInfoCard} item sm={12} xs={12}>

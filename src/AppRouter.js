@@ -7,6 +7,7 @@ import RegisterScreen from './screens/RegisterScreen'
 import LoginScreen from './screens/LoginScreen'
 import DashboardScreen from "./screens/Authorized/DashboardScreen";
 import NotchedOutline from "@material-ui/core/OutlinedInput/NotchedOutline";
+import CreateVtcScreen from "./screens/Authorized/CreateVtcScreen";
 
 function PrivateRoute({component: Component, ...rest}) {
     const { authToken } = useAuth();
@@ -42,6 +43,7 @@ function AppRouter(props) {
                     <NoAuthOnlyRoute exact path="/register" component={RegisterScreen}/>
                     <NoAuthOnlyRoute exact path="/login" component={LoginScreen}/>
                     <PrivateRoute component={DashboardScreen} exact path={"/dashboard"}/>
+                    <PrivateRoute component={CreateVtcScreen} exact path={"/vtc/new"}/>
                 </Switch>
             </Router>
         </Context.Provider>
