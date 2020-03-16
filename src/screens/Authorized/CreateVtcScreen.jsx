@@ -23,6 +23,8 @@ import Jcb from '../../img/jcb.png';
 import Diners from '../../img/diners.png';
 import CheckIcon from '@material-ui/icons/Check';
 import {Alert} from "@material-ui/lab";
+import PaymentForm from "../../components/PaymentForm";
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -146,7 +148,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const _getSteps = () => {
-    return ['VTC Info', 'VTC Settings', 'Choose Payment Plan'];
+    return ['VTC Info', 'VTC Settings', 'Choose Payment Plan', 'Payment'];
 };
 
 const theme = createMuiTheme({
@@ -178,6 +180,7 @@ export default function CreateVtcScreen(props) {
     const [vtcMinimumAge, setVtcMinimumAge] = useState(null);
     const [selectedPricingPlan, setSelectedPricingPlan] = useState(null);
     const [stepErrors, setStepErrors] = useState([]);
+    const {authToken, setAuthToken} = useAuth();
 
 
     const handleNext = () => {
@@ -490,6 +493,12 @@ export default function CreateVtcScreen(props) {
                                 <img src={Jcb} alt={"discover"}/>
                             </Grid>
                         </Grid>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div style={{textAlign: "center", padding: "24px", display: "flex",alignItems: "center", flexDirection: "column", width: "80%"}}>
+                        <PaymentForm userToken={authToken} selectedPlan={selectedPricingPlan}/>
                     </div>
                 );
             default:

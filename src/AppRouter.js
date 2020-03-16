@@ -8,6 +8,8 @@ import LoginScreen from './screens/LoginScreen'
 import DashboardScreen from "./screens/Authorized/DashboardScreen";
 import NotchedOutline from "@material-ui/core/OutlinedInput/NotchedOutline";
 import CreateVtcScreen from "./screens/Authorized/CreateVtcScreen";
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js";
 
 function PrivateRoute({component: Component, ...rest}) {
     const { authToken } = useAuth();
@@ -35,17 +37,21 @@ function AppRouter(props) {
         setAuthToken(data);
     };
 
+    const stripePromise = loadStripe('pk_test_7acZYoOvnypHUSj02xFRdvrT00sulWsCDO');
+
     return (
         <Context.Provider value={{authToken, setAuthToken: setTokens}}>
-            <Router>
-                <Switch>
-                    <NoAuthOnlyRoute exact path="/" component={HomeScreen}/>
-                    <NoAuthOnlyRoute exact path="/register" component={RegisterScreen}/>
-                    <NoAuthOnlyRoute exact path="/login" component={LoginScreen}/>
-                    <PrivateRoute component={DashboardScreen} exact path={"/dashboard"}/>
-                    <PrivateRoute component={CreateVtcScreen} exact path={"/vtc/new"}/>
-                </Switch>
-            </Router>
+            <Elements stripe={stripePromise}>
+                <Router>
+                    <Switch>
+                        <NoAuthOnlyRoute exact path="/" component={HomeScreen}/>
+                        <NoAuthOnlyRoute exact path="/register" component={RegisterScreen}/>
+                        <NoAuthOnlyRoute exact path="/login" component={LoginScreen}/>
+                        <PrivateRoute component={DashboardScreen} exact path={"/dashboard"}/>
+                        <PrivateRoute component={CreateVtcScreen} exact path={"/vtc/new"}/>
+                    </Switch>
+                </Router>
+            </Elements>
         </Context.Provider>
     )
 }
