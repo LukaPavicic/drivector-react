@@ -35,7 +35,6 @@ export default function DashboardScreen(props) {
     const history = useHistory();
 
     const _getLoggedInUserData = () => {
-        console.log(authToken);
         axios.get(`${ROOT_API}/v1/users/current_user`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`
@@ -54,7 +53,6 @@ export default function DashboardScreen(props) {
     };
 
     useEffect(() => {
-        console.log(authToken);
         _getLoggedInUserData();
     }, []);
 

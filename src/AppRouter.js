@@ -15,7 +15,7 @@ function PrivateRoute({component: Component, ...rest}) {
     const { authToken } = useAuth();
 
     return (
-        <Route {...rest} render={props => (authToken === "undefined" || typeof authToken === "undefined") ? (
+        <Route {...rest} render={props => (typeof authToken === "undefined" || authToken === "undefined") ? (
             <Redirect to={"/login"}/>
         ) : (<Component {...props}/>)} />
     )
@@ -25,7 +25,7 @@ function NoAuthOnlyRoute({component: Component, ...rest}) {
     const { authToken } = useAuth();
 
     return (
-        <Route {...rest} render={props => (authToken === "undefined" || typeof authToken === "undefined" || authToken.length === 0) ? (<Component {...props}/>) : (<Redirect to={"/dashboard"}/>)}/>
+        <Route {...rest} render={props => (typeof authToken === "undefined" || authToken === null || authToken === "undefined" || authToken.length === 0) ? (<Component {...props}/>) : (<Redirect to={"/dashboard"}/>)}/>
     )
 }
 

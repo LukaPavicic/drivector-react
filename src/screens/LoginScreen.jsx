@@ -77,7 +77,6 @@ export default function LoginScreen(props) {
       }
     }, {
     }).then(res => {
-      console.log(res.data);
       setAuthToken(res.data.meta.access_token);
       setIsLoggedIn(true);
     }).catch(err => {

@@ -24,6 +24,9 @@ import Diners from '../../img/diners.png';
 import CheckIcon from '@material-ui/icons/Check';
 import {Alert} from "@material-ui/lab";
 import PaymentForm from "../../components/PaymentForm";
+import {ROOT_API} from "../../api_endpoint";
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -148,7 +151,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const _getSteps = () => {
-    return ['VTC Info', 'VTC Settings', 'Choose Payment Plan', 'Payment'];
+    return ['VTC Info', 'VTC Settings', 'Choose Payment Plan', 'Add Payment Method'];
 };
 
 const theme = createMuiTheme({
@@ -237,6 +240,28 @@ export default function CreateVtcScreen(props) {
 
     const _handleVtcMinimumAgeInput = (e) => {
         setVtcMinimumAge(e.target.value);
+    };
+
+    const history = useHistory();
+
+    const createVtc = () => {
+        axios.post(`${ROOT_API}/v1/vtcs/create`, {
+            "vtc": {
+                "name": vtcName,
+                "description": vtcDescription,
+                "main_color": vtcColor,
+                "minimum_age_to_join": vtcMinimumAge
+            }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(res => {
+            console.log(res.data);
+            history.push('/dashboard')
+        }).catch(err => {
+            console.log(err);
+        })
     };
 
     const _getStepContent = (step) => {
@@ -498,7 +523,7 @@ export default function CreateVtcScreen(props) {
             case 3:
                 return (
                     <div style={{textAlign: "center", padding: "24px", display: "flex",alignItems: "center", flexDirection: "column", width: "80%"}}>
-                        <PaymentForm userToken={authToken} selectedPlan={selectedPricingPlan}/>
+                        <PaymentForm createVtc={createVtc} userToken={authToken} selectedPlan={selectedPricingPlan}/>
                     </div>
                 );
             default:

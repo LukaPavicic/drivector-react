@@ -26,7 +26,7 @@ function PaymentForm(props) {
                   'Authorization': `Bearer ${props.userToken}`
               }
           }).then(res => {
-              console.log(res.data);
+              props.createVtc()
           })
       });
     };
@@ -50,7 +50,7 @@ function PaymentForm(props) {
                             <CardElement/>
                         </Grid>
                     </Grid>
-                    <Button style={{backgroundColor: "#27ae60", color: "white", marginTop: "15px"}} type={"submit"} disabled={!stripe}>Pay</Button>
+                    <Button style={{backgroundColor: "#27ae60", color: "white", marginTop: "15px"}} type={"submit"} disabled={!stripe}>Pay and Create VTC</Button>
                 </form>
             </div>
         )
