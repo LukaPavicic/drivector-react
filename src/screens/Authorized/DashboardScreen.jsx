@@ -25,7 +25,16 @@ const useStyles = makeStyles(theme => ({
     },
     vtcInfoCard: {
         marginTop: "20px",
-    }
+    },
+    vtcCardPresent: {
+        width: "70%",
+        height: "auto",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        position: "relative",
+        marginBottom: "20px"
+    },
 }));
 
 export default function DashboardScreen(props) {
@@ -42,6 +51,7 @@ export default function DashboardScreen(props) {
         }).then(res => {
             setCurrentUser(res.data.user);
             setIsLoading(false);
+            console.log(res.data)
         }).catch(err => {
             setAuthToken();
             history.push('/');
@@ -62,16 +72,17 @@ export default function DashboardScreen(props) {
     if(isLoading) {
         return (
             <div style={{width: "100%", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
-                <CircularProgress />
+                <CircularProgress style={{color: "#27ae60"}}/>
             </div>
         )
     } else {
         return (
             <div>
-                <Navigation userLoggedIn={true} />
+                <Navigation userLoggedIn={true} vtcColor={(currentUser.user_joined_vtc === null) ? "#27ae60" : currentUser.user_joined_vtc.main_color} />
+                <Typography style={{marginTop: "100px", textAlign: "center", padding: "10px"}} variant={"h4"}>Welcome, {currentUser.username}!</Typography>
                 <Container>
                     {(currentUser.user_joined_vtc === null) ?
-                        <Grid container spacing={5} direction={"row"} style={{paddingTop: "105px", paddingBottom: "20px"}}>
+                        <Grid container spacing={5} direction={"row"} style={{paddingTop: "10px", paddingBottom: "20px"}}>
                             <Grid className={classes.topGrid} item xs={12} sm={6}>
                                 <Paper elevation={3} className={classes.topSectionLeft}>
                                         <Typography variant={"h4"}>You are currently not in a VTC</Typography>
@@ -117,7 +128,21 @@ export default function DashboardScreen(props) {
                             </Grid>
                         </Grid>
                         :
-                        <span>in vtc</span>
+                        <Container style={{display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 0px 20px 0px"}}>
+                            <Paper elevation={3} className={classes.vtcCardPresent}>
+                                <div style={{backgroundColor: currentUser.user_joined_vtc.main_color, width: "100%", height: "40px", borderTopLeftRadius: "5px", borderTopRightRadius: "5px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start"}}>
+                                    <Typography style={{marginLeft: "10px", color: "white"}}>JOINED VTC</Typography>
+                                </div>
+                                <Typography variant={"h3"} style={{marginTop: "15px"}}>{currentUser.user_joined_vtc.name}</Typography>
+                                <img src={"https://www.oiltechconnect.com/front-end/img/default-logo.png"} alt={"vtc logo"} height={"200px"}/>
+                                <Button variant={"contained"} style={{backgroundColor: currentUser.user_joined_vtc.main_color, color: "white", margin: "15px"}}>GO TO VTC DASHBOARD</Button>
+                            </Paper>
+                            <Paper elevation={3} className={classes.vtcCardPresent}>
+                                <div style={{backgroundColor: currentUser.user_joined_vtc.main_color, width: "100%", height: "40px", borderTopLeftRadius: "5px", borderTopRightRadius: "5px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start"}}>
+                                    <Typography style={{marginLeft: "10px", color: "white"}}>NEW IN {currentUser.user_joined_vtc.name.toUpperCase()} FORUM</Typography>
+                                </div>
+                            </Paper>
+                        </Container>
                     }
                 </Container>
                 <Copyright/>

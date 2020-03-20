@@ -71,7 +71,7 @@ class RegisterScreen extends React.Component {
       steam_profile_link_input: "",
       birth_date_input: null,
       username_input: "",
-      missing_fields: []
+      error_messages: [],
     }
   }
 
@@ -117,6 +117,16 @@ class RegisterScreen extends React.Component {
     })
   };
 
+  _getKeyWithValue = (object, value) => {
+    for(let prop in object) {
+      if(object.hasOwnProperty(prop)) {
+        if(object[prop] === value){
+          return prop;
+        }
+      }
+    }
+  };
+
   _register = () => {
     // send register request to server
     axios.post(`${ROOT_API}/v1/users/register`, {
@@ -142,9 +152,8 @@ class RegisterScreen extends React.Component {
       this.props.history.push('/login', state);
     }).catch(err => {
       this.setState({
-        missing_fields: Object.keys(err.response.data)
-      });
-      console.log(this.state.missing_fields);
+        error_messages: err.response.data
+      })
     })
   };
 
@@ -170,9 +179,12 @@ class RegisterScreen extends React.Component {
             <Typography component="h1" variant="h5">
               Register
             </Typography>
-            {(this.state.missing_fields.length > 0) ?
-              <Alert style={{marginTop: "20px"}} severity={"error"}>Please fill out the following fields: {this.state.missing_fields.map(m => {return `${m}, `})}</Alert>
-             : null}
+            {/*{(this.state.error_messages.length > 0) ?*/}
+            {/*  <Alert style={{marginTop: "20px"}} severity={"error"}>Please fill out the following fields: {this.state.error_messages.map(m => {return `${m}, `})}</Alert>*/}
+            {/* : null}*/}
+            {this.state.error_messages.map(msg => (
+                <Alert style={{marginTop: "20px", width: "100%"}} severity={"error"}>{msg}</Alert>
+            ))}
             <form className={classes.form} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12}>

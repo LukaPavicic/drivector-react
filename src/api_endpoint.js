@@ -1,5 +1,5 @@
 let backendHost;
-//let ngrok_host = "https://stark-woodland-16765.herokuapp.com";
+//let ngrok_host = "https://api.drivector.com";
 let ngrok_host = "http://localhost:3000";
 const hostname = window && window.location && window.location.hostname;
 
