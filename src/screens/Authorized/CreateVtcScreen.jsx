@@ -27,6 +27,8 @@ import PaymentForm from "../../components/PaymentForm";
 import {ROOT_API} from "../../api_endpoint";
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
+import CreditCard from '@material-ui/icons/CreditCard';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -176,8 +178,8 @@ export default function CreateVtcScreen(props) {
     const classes = useStyles();
     const steps = _getSteps();
     const [activeStep, setActiveStep] = useState(0);
-    const [vtcName, setVtcName] = useState("");
-    const [vtcDescription, setVtcDescription] = useState("");
+    const [vtcName, setVtcName] = useState("fewfewfwfwewe");
+    const [vtcDescription, setVtcDescription] = useState("fwefwefwefwfwefweewfwe");
     const [vtcImage, setVtcImage] = useState(null);
     const [vtcColor, setVtcColor] = useState("#27ae60");
     const [vtcMinimumAge, setVtcMinimumAge] = useState(null);
@@ -250,7 +252,7 @@ export default function CreateVtcScreen(props) {
                 "name": vtcName,
                 "description": vtcDescription,
                 "main_color": vtcColor,
-                "minimum_age_to_join": vtcMinimumAge
+                "minimum_age_to_join": vtcMinimumAge === null ? 1 : vtcMinimumAge
             }
         }, {
             headers: {
@@ -270,7 +272,7 @@ export default function CreateVtcScreen(props) {
                 return (
                     <div style={{textAlign: "center", padding: "24px", display: "flex",alignItems: "center", flexDirection: "column"}}>
                         <Typography style={{marginBottom: "7px"}} variant={"h3"}>VTC Info</Typography>
-                        <Typography variant={"h5"}>This data will be shown to all users who see you VTC page.</Typography>
+                        <Typography variant={"h5"}>This data will be shown to all users who see your VTC page.</Typography>
                         <Typography variant={"h6"} style={{marginTop: "15px"}}>Add an image to your VTC</Typography>
                         <div onClick={_showUploadFile} className={classes.addVtcImage}>
                             <input id={"addVtcImage"} style={{display: "none", width: "100%", height: "100%"}} type={"file"} onChange={_handleImageSelect}/>
@@ -521,13 +523,67 @@ export default function CreateVtcScreen(props) {
                     </div>
                 );
             case 3:
-                return (
-                    <div style={{textAlign: "center", padding: "24px", display: "flex",alignItems: "center", flexDirection: "column", width: "80%"}}>
-                        <PaymentForm createVtc={createVtc} userToken={authToken} selectedPlan={selectedPricingPlan}/>
-                    </div>
-                );
+                if(selectedPricingPlan === 0) {
+                    return (
+                        <div style={{textAlign: "center", padding: "24px", display: "flex",alignItems: "center", flexDirection: "column", width: "80%"}}>
+                            <Typography variant={"h4"}>You don't need to add a credit card for now</Typography>
+                            <Typography variant={"h5"} style={{color: "grey"}}>Since you are using the FREE plan</Typography>
+                            <CreditCard style={{fontSize: "130px", color: "grey"}}/>
+                            <Typography variant={"h6"} style={{color: "grey"}}>NO CARD</Typography>
+                        </div>
+                    )
+                } else {
+                    return (
+                        <div style={{textAlign: "center", padding: "24px", display: "flex",alignItems: "center", flexDirection: "column", width: "80%"}}>
+                            <PaymentForm createVtc={createVtc} userToken={authToken} selectedPlan={selectedPricingPlan}/>
+                        </div>
+                    );
+                }
             default:
                 return 'Unknown step';
+        }
+    };
+
+    const _showFormNavButton = () => {
+        if(selectedPricingPlan === 0) {
+            if(activeStep === steps.length-1) {
+                return (
+                    <Button
+                        variant="contained"
+                        style={{backgroundColor: "#27ae60", color: "white"}}
+                        onClick={createVtc}
+                        className={classes.button}
+                    >
+                        Finish
+                    </Button>
+                )
+            } else {
+                return (
+                    <Button
+                        variant="contained"
+                        style={{backgroundColor: "#27ae60", color: "white"}}
+                        onClick={handleNext}
+                        className={classes.button}
+                    >
+                        Next
+                    </Button>
+                )
+            }
+        } else {
+            if(activeStep === steps.length-1) {
+                return null;
+            } else {
+                return (
+                    <Button
+                        variant="contained"
+                        style={{backgroundColor: "#27ae60", color: "white"}}
+                        onClick={handleNext}
+                        className={classes.button}
+                    >
+                        Next
+                    </Button>
+                )
+            }
         }
     };
 
@@ -557,14 +613,7 @@ export default function CreateVtcScreen(props) {
                         <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                             Back
                         </Button>
-                        <Button
-                            variant="contained"
-                            style={{backgroundColor: "#27ae60", color: "white"}}
-                            onClick={handleNext}
-                            className={classes.button}
-                        >
-                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                        </Button>
+                        {_showFormNavButton()}
                     </div>
                 </Container>
             </div>

@@ -31,31 +31,20 @@ function PaymentForm(props) {
       });
     };
 
-    if(props.selectedPlan === 0) {
-
-        return (
-         <div>
-             You are using FREE plan so you don't need to add your card for now.
-         </div>
-        )
-
-    } else {
-
-        return (
-            <div style={{width: "80%"}}>
-                <form onSubmit={_handleSubmit}>
-                    <Grid container justify={"center"}>
-                        <Grid item xs={12} sm={6}>
-                            <Typography variant={"h6"} style={{marginBottom: "15px"}}>Card Details</Typography>
-                            <CardElement/>
-                        </Grid>
+    return (
+        <div style={{width: "80%"}}>
+            <form onSubmit={_handleSubmit}>
+                <Grid container justify={"center"}>
+                    <Grid item xs={12} sm={6}>
+                        <Typography variant={"h6"} style={{marginBottom: "15px"}}>Card Details</Typography>
+                        <CardElement/>
                     </Grid>
-                    <Button style={{backgroundColor: "#27ae60", color: "white", marginTop: "15px"}} type={"submit"} disabled={!stripe}>Pay and Create VTC</Button>
-                </form>
-            </div>
-        )
+                </Grid>
+                <Button style={{backgroundColor: "#27ae60", color: "white", marginTop: "15px"}} type={"submit"} disabled={!stripe}>Pay and Create VTC</Button>
+            </form>
+        </div>
+    )
 
-    }
 }
 
 export default PaymentForm;

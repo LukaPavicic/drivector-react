@@ -57,7 +57,7 @@ function Navigation(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
 
-  const {history} = useHistory();
+  const history = useHistory();
   const classes = useStyles();
   const { authToken, setAuthToken } = useAuth();
 
