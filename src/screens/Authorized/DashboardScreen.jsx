@@ -195,7 +195,7 @@ export default function DashboardScreen(props) {
             case 1:
                 return <UserHome/>;
             case 8:
-                return <AdminSettings vtc={currentUser.user_joined_vtc}/>;
+                return <AdminSettings getNewUserData={_getLoggedInUserData} vtc={currentUser.user_joined_vtc}/>;
             default:
                 return <UserHome/>
         }
