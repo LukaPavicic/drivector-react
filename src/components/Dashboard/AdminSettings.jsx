@@ -192,7 +192,10 @@ export default function AdminSettings(props) {
                                 <b style={{marginRight: "10px"}}>Pricing Plan</b> <span style={{color: "black"}}>{_translatePricingPlan(props.vtc.pricing_plan)}</span>
                             </Typography>
                             <Typography variant={"body1"} className={classes.generalInfoItem}>
-                                <b style={{marginRight: "10px"}}>Member Count</b> <span style={{color: "black"}}>{props.vtc.member_count}/{props.vtc.maximum_amount_of_users}</span>
+                                <b style={{marginRight: "10px"}}>Member Count</b>
+                                <span style={{color: "black"}}>
+                                    {props.vtc.member_count}/{props.vtc.maximum_amount_of_users}{(props.vtc.maximum_amount_of_users === 20000) ? " (Contact support if you need more than 20 000 slots, it will be added for free!)" : null}
+                                </span>
                             </Typography>
                             <Typography variant={"body1"} className={classes.generalInfoItem}>
                                 <b style={{marginRight: "10px"}}>Main Color</b> <span style={{color: props.vtc.main_color}}>{props.vtc.main_color}</span>

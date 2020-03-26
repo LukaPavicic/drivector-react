@@ -175,17 +175,36 @@ export default function DashboardScreen(props) {
         })
     };
 
+    const _getAllVtcs = () => {
+      axios.get(`${ROOT_API}/v1/vtcs`, {
+          headers: {
+              'Authorization': `Bearer ${authToken}`
+          }
+      }).then(res => {
+          console.log(res.data);
+          setFeaturedVtcs(res.data.vtcs);
+      }).catch(err => {
+          console.log(err);
+      })
+    };
+
     const _onClickCreateNewVtc = () => {
       history.push("/vtc/new");
     };
 
+    const _goToVtcPage = (id) => {
+      history.push(`/vtc/${id}`);
+    };
+
     useEffect(() => {
         _getLoggedInUserData();
+        _getAllVtcs()
     }, []);
 
     const [currentUser, setCurrentUser] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [currentTab, setCurrentTab] = useState(0);
+    const [featuredVtcs, setFeaturedVtcs] = useState([]);
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -216,16 +235,39 @@ export default function DashboardScreen(props) {
                 <CssBaseline/>
                 <Navigation userLoggedIn={true} vtcColor={(currentUser.user_joined_vtc === null) ? "#27ae60" : currentUser.user_joined_vtc.main_color} />
                     {(currentUser.user_joined_vtc === null) ?
-                        <Container>
+                        <Container style={{marginTop: "70px"}}>
                             <Grid container spacing={5} direction={"row"} style={{paddingTop: "10px", paddingBottom: "20px"}}>
-                                <Grid className={classes.topGrid} item xs={12} sm={6}>
+                                <Grid className={classes.topGrid} item xs={12} sm={12} md={6} lg={6}>
                                     <Paper elevation={3} className={classes.topSectionLeft}>
-                                            <Typography variant={"h4"}>You are currently not in a VTC</Typography>
-                                            <Button variant={"contained"} style={{backgroundColor: "#27ae60", color: "white", marginTop: "20px"}}>SEARCH FOR VTCs</Button>
-                                            <Typography style={{marginTop: "10px"}}>Featured VTCs:</Typography>
+                                        <Typography variant={"h4"}>You are currently not in a VTC</Typography>
+                                        <Button variant={"contained"} style={{backgroundColor: "#27ae60", color: "white", marginTop: "20px"}}>SEARCH FOR VTCs</Button>
+                                        <Typography style={{marginTop: "10px"}}>Featured VTCs:</Typography>
+                                        {featuredVtcs.slice(0,5).map(vtc => {
+                                            return (
+                                                <Card key={vtc.id} elevation={3} style={{marginTop: "10px", width: "100%"}}>
+                                                    <CardContent style={{wordWrap: "break-word"}}>
+                                                        <Grid container>
+                                                            <Grid item lg={3} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                                                                <div style={{backgroundColor: "grey", width: 70, height: 70, borderRadius: 35}}>
+
+                                                                </div>
+                                                            </Grid>
+                                                            <Grid item lg={7}>
+                                                                <Typography align={"left"} variant="h6">{vtc.name}</Typography>
+                                                                <Typography align={"left"}>{vtc.description}</Typography>
+                                                                <Typography align={"left"} style={{color: "grey"}}>{vtc.member_count}/{vtc.maximum_amount_of_users}</Typography>
+                                                            </Grid>
+                                                            <Grid item lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                                                                <Button onClick={() => _goToVtcPage(vtc.id)} variant={"contained"} style={{backgroundColor: "#27ae60", color: "white"}}>VIEW</Button>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </CardContent>
+                                                </Card>
+                                            )
+                                        })}
                                     </Paper>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={12} md={6} lg={6}>
                                     <Paper elevation={3} className={classes.topSectionLeft}>
                                         <Typography variant={"h4"}>Want to run your own VTC?</Typography>
                                         <Button onClick={_onClickCreateNewVtc} to={"/vtc/new"} variant={"contained"} style={{backgroundColor: "#27ae60", color: "white", marginTop: "20px"}}>CREATE VTC NOW</Button>
@@ -356,10 +398,10 @@ export default function DashboardScreen(props) {
                                 <Container maxWidth="lg" className={classes.container}>
                                     {_renderMainContent()}
                                 </Container>
+                                <Copyright/>
                             </main>
                         </div>
                     }
-                <Copyright/>
             </div>
         )
     }

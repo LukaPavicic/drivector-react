@@ -71,6 +71,13 @@ export default function EmployeeItem(props) {
                     </Tooltip>
                 );
             case 3:
+                if(props.emp.user.id === props.emp.vtc.owner) {
+                    return (
+                        <Tooltip title={"Owner cannot be demoted."}>
+                            <Button style={{backgroundColor: "#bdc3c7", marginLeft: "10px"}} variant={"contained"}><TrendingDownIcon style={{color: "white"}}/></Button>
+                        </Tooltip>
+                    );
+                }
                 return (
                     <Tooltip title={"Demote to Moderator"}>
                         <Button style={{backgroundColor: "#f1c40f", marginLeft: "10px"}} variant={"contained"}><TrendingDownIcon style={{color: "white"}}/></Button>
@@ -91,9 +98,15 @@ export default function EmployeeItem(props) {
             <TableCell>{_renderPermission(props.emp.permissions)}</TableCell>
             <TableCell>{moment(props.emp.created_at).format("MMMM Do YYYY")}({moment(props.emp.created_at).fromNow()})</TableCell>
             <TableCell>
-                <Tooltip title={"Kick"}>
-                    <Button style={{backgroundColor: "#e74c3c"}} variant={"contained"}><DeleteIcon style={{color: "white"}}/></Button>
-                </Tooltip>
+                {(props.emp.user.id === props.emp.vtc.owner) ?
+                    <Tooltip title={"Owner cannot be kicked."}>
+                        <Button style={{backgroundColor: "#bdc3c7"}} variant={"contained"}><DeleteIcon style={{color: "white"}}/></Button>
+                    </Tooltip>
+                    :
+                    <Tooltip title={"Kick"}>
+                        <Button style={{backgroundColor: "#e74c3c"}} variant={"contained"}><DeleteIcon style={{color: "white"}}/></Button>
+                    </Tooltip>
+                }
                 {_renderPromote(props.emp.permissions)}
                 {_renderDemote(props.emp.permissions)}
             </TableCell>
