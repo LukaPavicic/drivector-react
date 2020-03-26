@@ -35,7 +35,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import UserHome from "../../components/Dashboard/UserHome";
 import AdminSettings from "../../components/Dashboard/AdminSettings";
 import EqualizerIcon from '@material-ui/icons/Equalizer';
-import SubjectIcon from '@material-ui/icons/Subject'
+import SubjectIcon from '@material-ui/icons/Subject';
+import AdminManageMembers from "../../components/Dashboard/AdminManageMembers";
 
 const drawerWidth = 240;
 
@@ -196,8 +197,10 @@ export default function DashboardScreen(props) {
                 return <UserHome/>;
             case 8:
                 return <AdminSettings getNewUserData={_getLoggedInUserData} vtc={currentUser.user_joined_vtc}/>;
+            case 9:
+                return <AdminManageMembers vtc={currentUser.user_joined_vtc}/>;
             default:
-                return <UserHome/>
+                return <UserHome/>;
         }
     };
 
@@ -337,7 +340,7 @@ export default function DashboardScreen(props) {
                                             </ListItemIcon>
                                             <ListItemText primary={"Settings"}/>
                                         </ListItem>
-                                        <ListItem button>
+                                        <ListItem button className={currentTab===9 ? classes.activeMenuTab : null} onClick={() => setCurrentTab(9)}>
                                             <ListItemIcon>
                                                 <PeopleIcon/>
                                             </ListItemIcon>
