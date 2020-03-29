@@ -37,6 +37,7 @@ import AdminSettings from "../../components/Dashboard/AdminSettings";
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import SubjectIcon from '@material-ui/icons/Subject';
 import AdminManageMembers from "../../components/Dashboard/AdminManageMembers";
+import VtcCard from "../../components/Dashboard/VtcCard";
 
 const drawerWidth = 240;
 
@@ -192,10 +193,6 @@ export default function DashboardScreen(props) {
       history.push("/vtc/new");
     };
 
-    const _goToVtcPage = (id) => {
-      history.push(`/vtc/${id}`);
-    };
-
     useEffect(() => {
         _getLoggedInUserData();
         _getAllVtcs()
@@ -244,25 +241,7 @@ export default function DashboardScreen(props) {
                                         <Typography style={{marginTop: "10px"}}>Featured VTCs:</Typography>
                                         {featuredVtcs.slice(0,5).map(vtc => {
                                             return (
-                                                <Card key={vtc.id} elevation={3} style={{marginTop: "10px", width: "100%"}}>
-                                                    <CardContent style={{wordWrap: "break-word"}}>
-                                                        <Grid container>
-                                                            <Grid item lg={3} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                                                                <div style={{backgroundColor: "grey", width: 70, height: 70, borderRadius: 35}}>
-
-                                                                </div>
-                                                            </Grid>
-                                                            <Grid item lg={7}>
-                                                                <Typography align={"left"} variant="h6">{vtc.name}</Typography>
-                                                                <Typography align={"left"}>{vtc.description}</Typography>
-                                                                <Typography align={"left"} style={{color: "grey"}}>{vtc.member_count}/{vtc.maximum_amount_of_users}</Typography>
-                                                            </Grid>
-                                                            <Grid item lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                                                                <Button onClick={() => _goToVtcPage(vtc.id)} variant={"contained"} style={{backgroundColor: "#27ae60", color: "white"}}>VIEW</Button>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </CardContent>
-                                                </Card>
+                                                <VtcCard vtc={vtc}/>
                                             )
                                         })}
                                     </Paper>

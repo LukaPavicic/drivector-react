@@ -10,6 +10,7 @@ import Error404 from "./screens/Error404";
 import CreateVtcScreen from "./screens/Authorized/CreateVtcScreen";
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
+import VtcScreen from "./screens/VtcScreen";
 
 function PrivateRoute({component: Component, ...rest}) {
     const { authToken } = useAuth();
@@ -49,6 +50,7 @@ function AppRouter(props) {
                         <NoAuthOnlyRoute exact path="/login" component={LoginScreen}/>
                         <PrivateRoute component={DashboardScreen} exact path={"/dashboard"}/>
                         <PrivateRoute component={CreateVtcScreen} exact path={"/vtc/new"}/>
+                        <Route component={VtcScreen} exact path={"/vtc/:vtc_id"}/>
                         <Route component={Error404} />
                     </Switch>
                 </Router>
