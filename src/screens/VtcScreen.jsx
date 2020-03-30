@@ -74,6 +74,7 @@ export default function VtcScreen(props) {
     const [sendRequestModalOpen, setSendRequestModalOpen] = useState(false);
     const [motivationText, setMotivationText] = useState("");
     const [hasRequestSucceeded, setHasRequestSucceeded] = useState(false);
+    const [userLoggedIn, setUserLoggedIn] = useState(false);
 
     const _getCurrentVtc = () => {
         axios.get(`${ROOT_API}/v1/vtcs/${props.match.params.vtc_id}`).then(res => {
@@ -122,7 +123,20 @@ export default function VtcScreen(props) {
       })
     };
 
+    const _userLoggedIn = () => {
+        axios.get(`${ROOT_API}/v1/users/current_user`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(res => {
+            setUserLoggedIn(true);
+        }).catch(err => {
+            setUserLoggedIn(false);
+        })
+    };
+
     useEffect(() => {
+        _userLoggedIn();
         _getCurrentVtc();
     }, []);
 
@@ -132,7 +146,7 @@ export default function VtcScreen(props) {
                 <Navigation/>
                 :
                 <div>
-                    <Navigation vtcColor={currentVtc.main_color}/>
+                    <Navigation userLoggedIn={userLoggedIn} vtcColor={currentVtc.main_color}/>
                     <Container style={{marginTop: "90px"}}>
                         <Modal
                             aria-labelledby="transition-modal-title"
@@ -207,9 +221,9 @@ export default function VtcScreen(props) {
                                         <AccountBalanceIcon/><b style={{marginRight: "10px", marginLeft: "5px"}}>Money Earned </b> <span style={{color: "#7f8c8d"}}>${currentVtc.money_made}</span>
                                     </Typography>
                                 </Card>
-                                <Card className={classes.vtcCard} style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                                {userLoggedIn ? <Card className={classes.vtcCard} style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                                     <Button onClick={() => setSendRequestModalOpen(true)} variant={"contained"} style={{backgroundColor: currentVtc.main_color, color: "white", alignSelf: "center"}}>REQUEST TO JOIN</Button>
-                                </Card>
+                                </Card> : null}
                                 <Card className={classes.vtcCard}>
                                     <Typography gutterBottom style={{color: "grey"}}>Social Media Links</Typography>
                                     <div style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly"}}>

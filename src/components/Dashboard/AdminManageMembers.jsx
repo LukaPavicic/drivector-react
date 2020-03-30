@@ -11,7 +11,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TableCell
+    TableCell,
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import axios from 'axios';
@@ -40,6 +40,7 @@ export default function AdminManageMembers(props) {
     const classes = useStyles();
     const [selectedTab, setSelectedTab] = React.useState(0);
     const [currentEmployees, setCurrentEmployees] = useState([]);
+    const [joinRequests, setJoinRequests] = useState([]);
 
     const handleChange = (event, newValue) => {
         setSelectedTab(newValue);
@@ -58,9 +59,72 @@ export default function AdminManageMembers(props) {
         })
     };
 
+    const _getJoinRequests = () => {
+        axios.get(`${ROOT_API}/v1/join_requests/vtc_requests`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(res => {
+            console.log(res.data);
+            setJoinRequests(res.data.join_requests);
+        }).catch(err => {
+            console.log(err);
+        })
+    };
+
     useEffect(() => {
         _getCurrentEmployees();
+        _getJoinRequests();
     }, []);
+
+    const _renderTabContent = () => {
+        switch (selectedTab) {
+            case 0:
+                return (
+                    <TableContainer component={Paper} style={{marginTop: "10px"}}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Username</TableCell>
+                                    <TableCell>Permissions</TableCell>
+                                    <TableCell>Join Date</TableCell>
+                                    <TableCell>Actions</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {currentEmployees.map(emp => {
+                                    return (
+                                        <EmployeeItem key={emp.id} emp={emp}/>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )
+            case 1:
+                return (
+                    <TableContainer component={Paper} style={{marginTop: "10px"}}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Username</TableCell>
+                                    <TableCell>Permissions</TableCell>
+                                    <TableCell>Join Date</TableCell>
+                                    <TableCell>Actions</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {joinRequests.map(req => {
+                                    return (
+                                        <h1>{req.user.username}</h1>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )
+        }
+    }
 
     return (
         <div>
@@ -74,28 +138,10 @@ export default function AdminManageMembers(props) {
                             indicatorColor="primary"
                             TabIndicatorProps={{style: {background: props.vtc.main_color, textColor: props.vtc.main_color}}}
                         >
-                            <Tab label="Current Employees" />
-                            <Tab label="Pending Requests To Join" />
+                            <Tab label="Current Employees" onClick={() => setSelectedTab(0)} />
+                            <Tab label="Pending Requests To Join" onClick={() => setSelectedTab(1)}/>
                         </Tabs>
-                        <TableContainer component={Paper} style={{marginTop: "10px"}}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Username</TableCell>
-                                        <TableCell>Permissions</TableCell>
-                                        <TableCell>Join Date</TableCell>
-                                        <TableCell>Actions</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {currentEmployees.map(emp => {
-                                        return (
-                                            <EmployeeItem key={emp.id} emp={emp}/>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        {_renderTabContent()}
                     </Paper>
                 </Grid>
             </Grid>

@@ -189,19 +189,31 @@ export default function DashboardScreen(props) {
       })
     };
 
+    const _getJoinedVtc = () => {
+        if(currentUser.user_joined_vtc !== null) {
+            axios.get(`${ROOT_API}/v1/vtcs/${currentUser.user_joined_vtc.id}`).then(res => {
+                console.log(res.data);
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+    };
+
+
     const _onClickCreateNewVtc = () => {
       history.push("/vtc/new");
     };
 
     useEffect(() => {
+        _getAllVtcs();
         _getLoggedInUserData();
-        _getAllVtcs()
     }, []);
 
     const [currentUser, setCurrentUser] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [currentTab, setCurrentTab] = useState(0);
     const [featuredVtcs, setFeaturedVtcs] = useState([]);
+    const [loggedUserVtc, setLoggedUserVtc] = useState({});
 
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
