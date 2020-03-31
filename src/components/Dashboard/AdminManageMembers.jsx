@@ -12,11 +12,13 @@ import {
     TableHead,
     TableRow,
     TableCell,
+    Badge, withStyles
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import axios from 'axios';
 import {ROOT_API} from "../../api_endpoint";
 import EmployeeItem from "./EmployeeItem";
+import JoinRequestItem from "./JoinRequestItem";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -72,6 +74,11 @@ export default function AdminManageMembers(props) {
         })
     };
 
+    const _reload = () => {
+        _getJoinRequests();
+        _getCurrentEmployees();
+    }
+
     useEffect(() => {
         _getCurrentEmployees();
         _getJoinRequests();
@@ -100,7 +107,7 @@ export default function AdminManageMembers(props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                )
+                );
             case 1:
                 return (
                     <TableContainer component={Paper} style={{marginTop: "10px"}}>
@@ -108,15 +115,15 @@ export default function AdminManageMembers(props) {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Username</TableCell>
-                                    <TableCell>Permissions</TableCell>
-                                    <TableCell>Join Date</TableCell>
+                                    <TableCell>Age</TableCell>
+                                    <TableCell>Requested At</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {joinRequests.map(req => {
                                     return (
-                                        <h1>{req.user.username}</h1>
+                                        <JoinRequestItem refreshData={_reload} key={req.id} req={req}/>
                                     );
                                 })}
                             </TableBody>
@@ -124,7 +131,15 @@ export default function AdminManageMembers(props) {
                     </TableContainer>
                 )
         }
-    }
+    };
+
+    const JoinRequestsBadge = withStyles((theme) => ({
+        badge: {
+            right: -3,
+            top: 13,
+            padding: '0 4px',
+        }
+    }))(Badge);
 
     return (
         <div>
@@ -139,7 +154,11 @@ export default function AdminManageMembers(props) {
                             TabIndicatorProps={{style: {background: props.vtc.main_color, textColor: props.vtc.main_color}}}
                         >
                             <Tab label="Current Employees" onClick={() => setSelectedTab(0)} />
+                            {joinRequests.length > 0 ? <JoinRequestsBadge badgeContent={joinRequests.length} color={"error"}>
+                                <Tab label="Pending Requests To Join" onClick={() => setSelectedTab(1)}/>
+                            </JoinRequestsBadge> :
                             <Tab label="Pending Requests To Join" onClick={() => setSelectedTab(1)}/>
+                            }
                         </Tabs>
                         {_renderTabContent()}
                     </Paper>
