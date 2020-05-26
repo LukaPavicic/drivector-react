@@ -178,10 +178,7 @@ class RegisterScreen extends React.Component {
             <img alt={"logo"} src={Logo} style={{maxWidth: 250}}/>
             <Typography component="h1" variant="h5">
               Register
-            </Typography>
-            {/*{(this.state.error_messages.length > 0) ?*/}
-            {/*  <Alert style={{marginTop: "20px"}} severity={"error"}>Please fill out the following fields: {this.state.error_messages.map(m => {return `${m}, `})}</Alert>*/}
-            {/* : null}*/}
+            </Typography>      
             {this.state.error_messages.map(msg => (
                 <Alert style={{marginTop: "20px", width: "100%"}} severity={"error"}>{msg}</Alert>
             ))}

@@ -178,8 +178,8 @@ export default function CreateVtcScreen(props) {
     const classes = useStyles();
     const steps = _getSteps();
     const [activeStep, setActiveStep] = useState(0);
-    const [vtcName, setVtcName] = useState("fewfewfwfwewe");
-    const [vtcDescription, setVtcDescription] = useState("fwefwefwefwfwefweewfwe");
+    const [vtcName, setVtcName] = useState("");
+    const [vtcDescription, setVtcDescription] = useState("");
     const [vtcImage, setVtcImage] = useState(null);
     const [vtcColor, setVtcColor] = useState("#27ae60");
     const [vtcMinimumAge, setVtcMinimumAge] = useState(null);

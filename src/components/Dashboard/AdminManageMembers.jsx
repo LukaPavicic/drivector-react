@@ -101,7 +101,7 @@ export default function AdminManageMembers(props) {
                             <TableBody>
                                 {currentEmployees.map(emp => {
                                     return (
-                                        <EmployeeItem key={emp.id} emp={emp}/>
+                                        <EmployeeItem vtc={props.vtc.id} key={emp.id} emp={emp}/>
                                     );
                                 })}
                             </TableBody>

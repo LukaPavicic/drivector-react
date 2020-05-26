@@ -75,6 +75,7 @@ export default function VtcScreen(props) {
     const [motivationText, setMotivationText] = useState("");
     const [hasRequestSucceeded, setHasRequestSucceeded] = useState(false);
     const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [joinErrorMessage, setJoinErrorMessage] = useState("");
 
     const _getCurrentVtc = () => {
         axios.get(`${ROOT_API}/v1/vtcs/${props.match.params.vtc_id}`).then(res => {
@@ -85,12 +86,12 @@ export default function VtcScreen(props) {
         })
     };
 
-    const _showJoinAlert = (type) => {
+    const _showJoinAlert = (type, err_message) => {
         // type 0 -> request failed
-        // type 1 -> request succeeded
+        // type 1 -> request succeeded        
         switch (type) {
             case 0:
-                setHasSentRequestToJoin(true);
+                setJoinErrorMessage(err_message);
                 setTimeout(() => setHasSentRequestToJoin(false), 10000);
                 break;
             case 1:
@@ -117,9 +118,7 @@ export default function VtcScreen(props) {
       }).catch(err => {
           setMotivationText("");
           setSendRequestModalOpen(false);
-          if(err.response.data.includes("User has already been taken")) {
-              _showJoinAlert(0);
-          }
+          _showJoinAlert(0, err.response.data.message)
       })
     };
 
@@ -240,8 +239,8 @@ export default function VtcScreen(props) {
                             </Grid>
                         </Grid>
                     </Container>
-                    {hasSentRequestToJoin ? <Alert onClose={() => setHasSentRequestToJoin(false)} severity={"error"} style={{position: "absolute", bottom: 5, left: 5}}>
-                        You already sent a request to join this VTC. Please wait for the response.
+                    {joinErrorMessage.length > 0 ? <Alert onClose={() => setHasSentRequestToJoin(false)} severity={"error"} style={{position: "absolute", bottom: 5, left: 5}}>
+                        {joinErrorMessage}
                     </Alert> : null}
                     {hasRequestSucceeded ? <Alert onClose={() => setHasRequestSucceeded(false)} severity={"success"} style={{position: "absolute", bottom: 5, left: 5}}>
                         Request to join sent successfully. You will hear back from the VTC admin as soon as possible. Sit tight.

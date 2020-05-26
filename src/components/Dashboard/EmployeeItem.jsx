@@ -4,12 +4,18 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import moment from "moment";
+import axios from 'axios'
+import {ROOT_API} from '../../api_endpoint'
+import {useAuth} from '../../store'
+
 
 export default function EmployeeItem(props) {
     // VTC Permissions:
     // 1 - member
     // 2 - moderator
     // 3 - admin
+
+    const {authToken, setAuthToken} = useAuth();
 
     const _renderPermission = (p) => {
       switch (p) {
@@ -26,6 +32,21 @@ export default function EmployeeItem(props) {
               return "Not found. Please contact support.";
       }
     };
+
+    const _kickEmployee = (user_to_kick) => {
+        axios.delete(`${ROOT_API}/v1/user_joined_vtcs/kick`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }, {
+            vtc_id: props.vtc,
+            user_id: user_to_kick
+        }).then(res => {
+            console.log(res.data)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
     const _renderPromote = (p) => {
         switch (p) {
@@ -104,7 +125,7 @@ export default function EmployeeItem(props) {
                     </Tooltip>
                     :
                     <Tooltip title={"Kick"}>
-                        <Button style={{backgroundColor: "#e74c3c"}} variant={"contained"}><DeleteIcon style={{color: "white"}}/></Button>
+                        <Button onClick={() => _kickEmployee(props.emp.id)} style={{backgroundColor: "#e74c3c"}} variant={"contained"}><DeleteIcon style={{color: "white"}}/></Button>
                     </Tooltip>
                 }
                 {_renderPromote(props.emp.permissions)}
