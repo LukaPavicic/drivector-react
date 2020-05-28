@@ -14,6 +14,7 @@ import AdminSettings from "../../components/Dashboard/AdminSettings";
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import SubjectIcon from '@material-ui/icons/Subject';
 import AdminManageMembers from "./AdminManageMembers";
+import JobsScreen from '../../screens/Authorized/Dashboard/JobsScreen'
 
 const drawerWidth = 240;
 
@@ -136,6 +137,8 @@ export default function InVtcDashboard(props) {
                 return <UserHome/>;
             case 1:
                 return <UserHome/>;
+            case 2:
+                return <JobsScreen vtc={currentUser.user_joined_vtc} />;
             case 8:
                 return <AdminSettings getNewUserData={() => props.refreshUserData()} vtc={currentUser.user_joined_vtc}/>;
             case 9:
@@ -166,13 +169,13 @@ export default function InVtcDashboard(props) {
                 <ListItem>
                     <Typography variant={"caption"} style={{color: "grey"}}>VTC RELATED</Typography>
                 </ListItem>
-                <ListItem button className={currentTab===1 ? classes.activeMenuTab : null}>
+                <ListItem button className={currentTab===1 ? classes.activeMenuTab : null} onClick={() => setCurrentTab(1)}>
                     <ListItemIcon>
                         <BusinessIcon/>
                     </ListItemIcon>
                     <ListItemText primary={"VTC Home"}/>
                 </ListItem>
-                <ListItem button>
+                <ListItem button className={currentTab===2 ? classes.activeMenuTab : null} onClick={() => setCurrentTab(2)}>
                     <ListItemIcon>
                         <WorkIcon/>
                     </ListItemIcon>
