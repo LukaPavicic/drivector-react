@@ -6,6 +6,7 @@ import { ROOT_API } from '../../../api_endpoint'
 import { useAuth } from '../../../store'
 import numeral from 'numeral'
 import CountUp from 'react-countup'
+import TodayJobsTable from '../../../components/Jobs/TodayJobsTable'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -24,7 +25,9 @@ export default function JobsScreen(props) {
 
     const [modalOpen, setModalOpen] = useState(false)
     const [todaysStats, setTodaysStats] = useState({})
-    const [isLoading, setIsLoading] = useState(true)
+    const [isDailyStatsFinished, setIsDailyStatsFinished] = useState(false)
+    const [isTodayJobsFinished, setIsTodayJobsFinished] = useState(false)
+    const [todayJobs, setTodayJobs] = useState({})
 
     const classes = useStyles();    
     const {authToken} = useAuth()
@@ -36,17 +39,31 @@ export default function JobsScreen(props) {
             }
         }).then(res => {            
             setTodaysStats(res.data)
-            setIsLoading(false)
+            setIsDailyStatsFinished(true)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    const _getTodaysJobs = () => {
+        axios.get(`${ROOT_API}/v1/jobs/today`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(res => {
+            setTodayJobs(res.data.jobs)
+            setIsTodayJobsFinished(true)
         }).catch(err => {
             console.log(err)
         })
     }
 
     useEffect(() => {
+        _getTodaysJobs()
         _getDailyStatistics()
     }, [])
 
-    if(isLoading) {
+    if(!isTodayJobsFinished || !isDailyStatsFinished) {
         return (
             <div>
                 <h1>Loading...</h1>
@@ -55,8 +72,7 @@ export default function JobsScreen(props) {
     } else {
         return (
             <div>
-                <Grid container spacing={3}>
-    
+                <Grid container spacing={3}>    
                     <NewJobModal vtc={props.vtc} modalOpen={modalOpen} closeModal={() => setModalOpen(false)}/>                
                     <Grid item xs={12} md={8} lg={9}>
                         <Paper className={classes.paper}>
@@ -66,25 +82,25 @@ export default function JobsScreen(props) {
                                     <Grid item xs={12} lg={6} md={6} sm={12} style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                                         <Typography variant="h5">Jobs Completed</Typography>
                                         <Typography variant="h4" style={{color: props.vtc.main_color}}>
-                                            <CountUp decimal="," end={todaysStats.jobs_completed} duration={3} />
+                                            <CountUp separator="," end={todaysStats.jobs_completed} duration={3} />
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} lg={6} md={6} sm={12} style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                                         <Typography variant="h5">Distance Driven</Typography>
                                         <Typography variant="h4" style={{color: props.vtc.main_color}}>
-                                            <CountUp decimal="," end={todaysStats.km_driven} duration={3} />km
+                                            <CountUp separator="," end={todaysStats.km_driven} duration={3} />km
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} lg={6} md={6} sm={12} style={{display: "flex", flexDirection: "column", alignItems: "center", marginTop: 40}}>
                                         <Typography variant="h5">Average Damage Taken</Typography>
                                         <Typography variant="h4" style={{color: props.vtc.main_color}}>
-                                            <CountUp decimal="." end={todaysStats.average_damage} duration={3} />%                                        
+                                            <CountUp separator="." end={todaysStats.average_damage} duration={3} />%                                        
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} lg={6} md={6} sm={12} style={{display: "flex", flexDirection: "column", alignItems: "center", marginTop: 40}}>
                                         <Typography variant="h5">Money Earned</Typography>
                                         <Typography variant="h4" style={{color: props.vtc.main_color}}>
-                                            $<CountUp decimal="," end={todaysStats.money_earned} duration={3} />
+                                            $<CountUp separator="," end={todaysStats.money_earned} duration={3} />
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -94,14 +110,16 @@ export default function JobsScreen(props) {
                     <Grid item xs={12} md={4} lg={3}>
                         <Paper className={classes.paper}>
                             <Typography variant={"h6"}>Submit New Job</Typography>
-                            <div style={{padding: 30, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
-                                <Button onClick={() => setModalOpen(true)} variant="contained" style={{color: "white", backgroundColor: props.vtc.main_color}}>SUBMIT JOB</Button>
+                            <Typography>Completed a job and want to log it?</Typography>
+                            <div style={{padding: 30, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%"}}>
+                                <Button onClick={() => setModalOpen(true)} variant="contained" style={{color: "white", backgroundColor: props.vtc.main_color, flexGrow: 1, width: "100%"}}>SUBMIT JOB</Button>
                             </div>                        
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <Typography variant={"h6"}>Jobs Completed Today</Typography>
+                            <TodayJobsTable jobs={todayJobs} />
                         </Paper>
                     </Grid>
                 </Grid>
