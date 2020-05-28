@@ -1,16 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import Drawer from "@material-ui/core/Drawer";
 import clsx from "clsx";
-import {Container, ListItem, ListItemIcon, ListItemText, Typography,CircularProgress} from "@material-ui/core";
+import {Container, ListItem, ListItemIcon, ListItemText, Typography, CircularProgress, Drawer, makeStyles} from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Copyright from "../Copyright";
-import {makeStyles} from "@material-ui/core/styles";
 import axios from "axios";
 import {ROOT_API} from "../../api_endpoint";
 import {useAuth} from "../../store";
-import {useHistory} from "react-router-dom"
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import PeopleIcon from "@material-ui/icons/People";
 import SubjectIcon from '@material-ui/icons/Subject';
@@ -70,11 +67,6 @@ export default function NoVtcDashboard(props) {
     const [currentUser, setCurrentUser] = useState(props.currentUser);
     const {authToken, setAuthToken} = useAuth();
     const [isLoading, setIsLoading] = useState(true);
-    const history = useHistory();
-
-    const _onClickCreateNewVtc = () => {
-        history.push("/vtc/new");
-    };
 
     const _getAllVtcs = () => {
         axios.get(`${ROOT_API}/v1/vtcs`, {

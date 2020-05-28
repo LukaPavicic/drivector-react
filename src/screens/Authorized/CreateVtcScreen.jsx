@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from "../../store";
 import Navigation from "../../components/Navigation";
-import {Card, CardActions, CardContent, CardHeader, Container} from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import {ThemeProvider as MuiThemeProvider} from '@material-ui/core/styles';
-import Icon from "@material-ui/core/Icon";
+import {Card, CardActions, CardContent, CardHeader, Container, Stepper, Step, 
+    StepLabel, Button, Typography, makeStyles, createMuiTheme, ThemeProvider as MuiThemeProvider, Icon, Grid, TextField} from "@material-ui/core";
 import Add from '@material-ui/icons/Add'
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
 import {SketchPicker} from 'react-color';
 import Amex from '../../img/amex.png';
 import Visa from '../../img/visa.png';
@@ -185,7 +175,7 @@ export default function CreateVtcScreen(props) {
     const [vtcMinimumAge, setVtcMinimumAge] = useState(null);
     const [selectedPricingPlan, setSelectedPricingPlan] = useState(null);
     const [stepErrors, setStepErrors] = useState([]);
-    const {authToken, setAuthToken} = useAuth();
+    const {authToken} = useAuth();
 
 
     const handleNext = () => {

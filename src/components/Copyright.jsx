@@ -13,7 +13,7 @@ function Copyright() {
             {new Date().getFullYear()}
             {'.'}
             </Typography>
-            <img align="center" src={Logo} style={{maxWidth: 100}}/>
+            <img align="center" alt="logo" src={Logo} style={{maxWidth: 100}}/>
         </div>
     )
 }

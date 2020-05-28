@@ -65,12 +65,11 @@ const useStyles = makeStyles(theme => ({
 export default function VtcScreen(props) {
 
     const classes = useStyles();
-    const {authToken, setAuthToken} = useAuth();
+    const {authToken} = useAuth();
 
     const [currentVtc, setCurrentVtc] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [hasSentRequestToJoin, setHasSentRequestToJoin] = useState(false);
-    const [showJoinErrorAlert, setJoinErrorAlert] = useState(false);
     const [sendRequestModalOpen, setSendRequestModalOpen] = useState(false);
     const [motivationText, setMotivationText] = useState("");
     const [hasRequestSucceeded, setHasRequestSucceeded] = useState(false);

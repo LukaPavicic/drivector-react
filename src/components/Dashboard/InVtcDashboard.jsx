@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import Drawer from "@material-ui/core/Drawer";
+import React, { useState } from 'react';
 import clsx from "clsx";
-import {Container, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
+import { Container, ListItem, ListItemIcon, ListItemText, Typography, makeStyles, Drawer } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Copyright from "../Copyright";
-import {makeStyles} from "@material-ui/core/styles";
 import BusinessIcon from '@material-ui/icons/Business';
 import ForumIcon from '@material-ui/icons/Forum';
 import WorkIcon from '@material-ui/icons/Work';
@@ -16,8 +14,6 @@ import AdminSettings from "../../components/Dashboard/AdminSettings";
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import SubjectIcon from '@material-ui/icons/Subject';
 import AdminManageMembers from "./AdminManageMembers";
-import {useAuth} from "../../store";
-import {useHistory} from 'react-router-dom'
 
 const drawerWidth = 240;
 
@@ -132,11 +128,7 @@ export default function InVtcDashboard(props) {
     const classes = useStyles();
     const [currentUser, setCurrentUser] = useState(props.currentUser);
     const [currentTab, setCurrentTab] = useState(0);
-    const [open, setOpen] = React.useState(true);
-    const {authToken, setAuthToken} = useAuth();
-    const history = useHistory();
-
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const [open, setOpen] = React.useState(true);    
 
     const _renderMainContent = () => {
         switch (currentTab) {

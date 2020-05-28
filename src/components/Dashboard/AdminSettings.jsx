@@ -38,7 +38,7 @@ export default function AdminSettings(props) {
     const [socialLinksUpdateErrorMessage, setSocialLinksUpdateErrorMessage] = useState("");
 
     const classes = useStyles();
-    const {authToken, setAuthToken} = useAuth();
+    const {authToken} = useAuth();
 
     const _translatePricingPlan = (key) => {
         switch (key) {
@@ -70,7 +70,7 @@ export default function AdminSettings(props) {
         if(link === "") {
             return "Not set";
         } else {
-            return <a target={"_blank"} href={link}>{link}</a>;
+            return <a target={"_blank"} rel="noopener noreferrer" href={link}>{link}</a>;
         }
     };
 

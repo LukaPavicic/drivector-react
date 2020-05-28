@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function AdminManageMembers(props) {
 
-    const {authToken, setAuthToken} = useAuth();
+    const {authToken} = useAuth();
     const classes = useStyles();
     const [selectedTab, setSelectedTab] = React.useState(0);
     const [currentEmployees, setCurrentEmployees] = useState([]);
