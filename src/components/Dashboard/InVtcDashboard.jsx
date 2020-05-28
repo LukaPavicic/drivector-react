@@ -138,11 +138,11 @@ export default function InVtcDashboard(props) {
             case 1:
                 return <UserHome/>;
             case 2:
-                return <JobsScreen vtc={currentUser.user_joined_vtc} />;
+                return <JobsScreen vtc={currentUser.vtc} />;
             case 8:
-                return <AdminSettings getNewUserData={() => props.refreshUserData()} vtc={currentUser.user_joined_vtc}/>;
+                return <AdminSettings getNewUserData={() => props.refreshUserData()} vtc={currentUser.vtc}/>;
             case 9:
-                return <AdminManageMembers vtc={currentUser.user_joined_vtc}/>;
+                return <AdminManageMembers vtc={currentUser.vtc}/>;
             default:
                 return <UserHome/>;
         }
@@ -214,7 +214,7 @@ export default function InVtcDashboard(props) {
                     </ListItemIcon>
                     <ListItemText primary={"Drivector Blog"}/>
                 </ListItem>
-                {currentUser.id === currentUser.user_joined_vtc.owner ?
+                {currentUser.user_joined_vtc.permissions === 2 || currentUser.user_joined_vtc.permissions === 3 ?
                     <div>
                         <ListItem>
                             <Typography variant={"caption"} style={{color: "grey"}}> ADMIN RELATED</Typography>

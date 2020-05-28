@@ -72,6 +72,7 @@ export default function NewJobModal(props) {
         }).then(res => {
             console.log(res.data)
             props.closeModal()
+            props.refreshData()
         }).catch(err => {
             console.log(err)
         })
@@ -103,7 +104,7 @@ export default function NewJobModal(props) {
                     <JobInput icon={<FaCity/>} value={toCity} setValue={(e) => setToCity(e)} label="ex. London" title="Destination City"/>
                     <JobInput icon={<FaBuilding/>} value={fromCompany} setValue={(e) => setFromCompany(e)} label="ex. Drekkar Trans" title="Starting Company"/>
                     <JobInput icon={<FaBuilding/>} value={toCompany} setValue={(e) => setToCompany(e)} label="ex. ACC" title="Destination Company"/>
-                    <JobInput icon={<FaHouseDamage/>} value={damage} setValue={(e) => setDamage(e)} label="ex. 5 (if there is no damage you can leave this empty" title="Cargo Damage" extraMessage='Do not type "%" just type the number'/>
+                    <JobInput icon={<FaHouseDamage/>} value={damage} setValue={(e) => setDamage(e)} label="ex. 5" title="Cargo Damage" extraMessage='Do not type "%" just type the number'/>
 
                     <Button style={{backgroundColor: props.vtc.main_color, color: "white", marginTop: 20}} onClick={_submitJob}>Submit Job</Button>
                 </div>

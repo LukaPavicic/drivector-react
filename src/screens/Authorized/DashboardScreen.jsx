@@ -45,7 +45,7 @@ export default function DashboardScreen(props) {
         return (
             <div>
                 <CssBaseline/>
-                <Navigation userLoggedIn={true} vtcColor={(currentUser.user_joined_vtc === null) ? "#27ae60" : currentUser.user_joined_vtc.main_color} />
+                <Navigation userLoggedIn={true} vtcColor={(currentUser.vtc === null) ? "#27ae60" : currentUser.vtc.main_color} />
                 {(currentUser.user_joined_vtc === null) ?
                     <NoVtcDashboard refreshUserData={_getLoggedInUserData} currentUser={currentUser}/>
                     :

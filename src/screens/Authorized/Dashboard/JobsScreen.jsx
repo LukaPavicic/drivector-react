@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {Grid, Paper, Typography, Button, Modal, Backdrop, Fade, makeStyles} from "@material-ui/core";
+import {Grid, Paper, Typography, Button, Modal, Backdrop, Fade, makeStyles } from "@material-ui/core";
+import { Pagination } from '@material-ui/lab'
 import NewJobModal from '../../../components/Jobs/NewJobModal';
 import axios from 'axios';
 import { ROOT_API } from '../../../api_endpoint'
@@ -28,6 +29,8 @@ export default function JobsScreen(props) {
     const [isDailyStatsFinished, setIsDailyStatsFinished] = useState(false)
     const [isTodayJobsFinished, setIsTodayJobsFinished] = useState(false)
     const [todayJobs, setTodayJobs] = useState({})
+    const [todayJobsPage, setTodayJobsPage] = useState(1)
+    const [todayJobsPagesCount, setTodayJobsPagesCount] = useState(1)    
 
     const classes = useStyles();    
     const {authToken} = useAuth()
@@ -45,23 +48,33 @@ export default function JobsScreen(props) {
         })
     }
 
-    const _getTodaysJobs = () => {
-        axios.get(`${ROOT_API}/v1/jobs/today`, {
+    const _getTodaysJobs = (val = todayJobsPage) => {
+        axios.get(`${ROOT_API}/v1/jobs/today?page=${val}`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
-        }).then(res => {
-            setTodayJobs(res.data.jobs)
+        }).then(res => {            
+            setTodayJobs(res.data.objects)
+            setTodayJobsPagesCount(res.data.meta.total_pages)
             setIsTodayJobsFinished(true)
         }).catch(err => {
             console.log(err)
         })
     }
 
-    useEffect(() => {
+    const _getData = () => {
         _getTodaysJobs()
         _getDailyStatistics()
+    }
+
+    useEffect(() => {
+        _getData()
     }, [])
+
+    const _onChangePagination = (event, value) => {        
+        setTodayJobsPage(value)
+        _getTodaysJobs(value)
+    }
 
     if(!isTodayJobsFinished || !isDailyStatsFinished) {
         return (
@@ -73,7 +86,7 @@ export default function JobsScreen(props) {
         return (
             <div>
                 <Grid container spacing={3}>    
-                    <NewJobModal vtc={props.vtc} modalOpen={modalOpen} closeModal={() => setModalOpen(false)}/>                
+                    <NewJobModal refreshData={_getData} vtc={props.vtc} modalOpen={modalOpen} closeModal={() => setModalOpen(false)}/>                                    
                     <Grid item xs={12} md={8} lg={9}>
                         <Paper className={classes.paper}>
                             <Typography variant={"h6"}>VTC's Today's Statistics</Typography>
@@ -118,7 +131,8 @@ export default function JobsScreen(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
-                            <Typography variant={"h6"}>Jobs Completed Today</Typography>
+                            <Typography variant={"h6"}>Jobs Completed Today</Typography>    
+                            <Pagination count={todayJobsPagesCount} page={todayJobsPage} onChange={_onChangePagination} style={{marginTop: 10}}/>                       
                             <TodayJobsTable jobs={todayJobs} />
                         </Paper>
                     </Grid>
