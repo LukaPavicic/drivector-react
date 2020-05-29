@@ -91,7 +91,7 @@ export default function VtcScreen(props) {
         switch (type) {
             case 0:
                 setJoinErrorMessage(err_message);
-                setTimeout(() => setHasSentRequestToJoin(false), 10000);
+                setTimeout(() => setJoinErrorMessage(""), 10000);
                 break;
             case 1:
                 setHasRequestSucceeded(true);
@@ -238,7 +238,7 @@ export default function VtcScreen(props) {
                             </Grid>
                         </Grid>
                     </Container>
-                    {joinErrorMessage.length > 0 ? <Alert onClose={() => setHasSentRequestToJoin(false)} severity={"error"} style={{position: "absolute", bottom: 5, left: 5}}>
+                    {joinErrorMessage.length > 0 ? <Alert onClose={() => setJoinErrorMessage("")} severity={"error"} style={{position: "absolute", bottom: 5, left: 5}}>
                         {joinErrorMessage}
                     </Alert> : null}
                     {hasRequestSucceeded ? <Alert onClose={() => setHasRequestSucceeded(false)} severity={"success"} style={{position: "absolute", bottom: 5, left: 5}}>

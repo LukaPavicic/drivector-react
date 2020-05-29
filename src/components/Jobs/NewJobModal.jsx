@@ -6,6 +6,7 @@ import { FaRoad, FaBox, FaCity, FaBuilding, FaHouseDamage } from 'react-icons/fa
 import { ROOT_API } from '../../api_endpoint'
 import axios from 'axios'
 import { useAuth } from '../../store'
+import { Alert } from '@material-ui/lab'
 
 
 const useStyles = makeStyles(theme => ({
@@ -54,6 +55,7 @@ export default function NewJobModal(props) {
     const [fromCompany, setFromCompany] = useState("")
     const [toCompany, setToCompany] = useState("")
     const [damage, setDamage] = useState("")
+    const [errorMessages, setErrorMessages] = useState([])
 
     const _submitJob = () => {
         axios.post(`${ROOT_API}/v1/jobs/create`, {
@@ -69,12 +71,11 @@ export default function NewJobModal(props) {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
-        }).then(res => {
-            console.log(res.data)
+        }).then(res => {            
             props.closeModal()
             props.refreshData()
-        }).catch(err => {
-            console.log(err)
+        }).catch(err => {            
+            setErrorMessages(err.response.data)
         })
     }
 
@@ -105,7 +106,11 @@ export default function NewJobModal(props) {
                     <JobInput icon={<FaBuilding/>} value={fromCompany} setValue={(e) => setFromCompany(e)} label="ex. Drekkar Trans" title="Starting Company"/>
                     <JobInput icon={<FaBuilding/>} value={toCompany} setValue={(e) => setToCompany(e)} label="ex. ACC" title="Destination Company"/>
                     <JobInput icon={<FaHouseDamage/>} value={damage} setValue={(e) => setDamage(e)} label="ex. 5" title="Cargo Damage" extraMessage='Do not type "%" just type the number'/>
-
+                    {errorMessages.map((err, index) => {
+                        return (
+                            <Alert severity="error" style={{marginTop: 10}} key={index}>{err}</Alert>
+                        )
+                    })}
                     <Button style={{backgroundColor: props.vtc.main_color, color: "white", marginTop: 20}} onClick={_submitJob}>Submit Job</Button>
                 </div>
                 </Fade>
