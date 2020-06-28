@@ -67,6 +67,9 @@ export default function NoVtcDashboard(props) {
     const [currentUser, setCurrentUser] = useState(props.currentUser);
     const {authToken, setAuthToken} = useAuth();
     const [isLoading, setIsLoading] = useState(true);
+    const [isUserJRfinished, setIsUserJRfinished] = useState(false)
+    const [joinRequestsPage, setJoinRequestsPage] = useState(1)
+    const [userJoinRequests, setUserJoinRequests] = useState({})
 
     const _getAllVtcs = () => {
         axios.get(`${ROOT_API}/v1/vtcs`, {
@@ -82,20 +85,35 @@ export default function NoVtcDashboard(props) {
         })
     };
 
+    const _getAllUserJoinRequests = (val = joinRequestsPage) => {
+        axios.get(`${ROOT_API}/v1/join_requests/user_requests?page=${val}`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        }).then(res => {
+            console.log(res.data)
+            setUserJoinRequests(res.data.objects)
+            setIsUserJRfinished(true)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     useEffect(() => {
         _getAllVtcs();
+        _getAllUserJoinRequests()
     }, []);
 
     const _renderSections = () => {
         switch (currentTab) {
             case 0:
                 return (
-                    <UserNoVtcHome />
+                    <UserNoVtcHome userJoinRequests={userJoinRequests}/>
                 )
         }
     };
 
-    if(isLoading) {
+    if(isLoading || !isUserJRfinished) {
         return (
             <div>
                 <div style={{width: "100%", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center"}}>

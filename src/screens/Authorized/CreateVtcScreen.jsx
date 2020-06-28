@@ -172,6 +172,7 @@ export default function CreateVtcScreen(props) {
     const [vtcDescription, setVtcDescription] = useState("");
     const [vtcImage, setVtcImage] = useState(null);
     const [vtcColor, setVtcColor] = useState("#27ae60");
+    const [vtcImageToSend, setVtcImageToSend] = useState("")
     const [vtcMinimumAge, setVtcMinimumAge] = useState(null);
     const [selectedPricingPlan, setSelectedPricingPlan] = useState(null);
     const [stepErrors, setStepErrors] = useState([]);
@@ -212,6 +213,7 @@ export default function CreateVtcScreen(props) {
 
     const _handleImageSelect = (e) => {
         setVtcImage(URL.createObjectURL(e.target.files[0]));
+        setVtcImageToSend(e.target.files[0])
     };
 
     const _showUploadFile = () => {
@@ -237,16 +239,19 @@ export default function CreateVtcScreen(props) {
     const history = useHistory();
 
     const createVtc = () => {
-        axios.post(`${ROOT_API}/v1/vtcs/create`, {
-            "vtc": {
-                "name": vtcName,
-                "description": vtcDescription,
-                "main_color": vtcColor,
-                "minimum_age_to_join": vtcMinimumAge === null ? 1 : vtcMinimumAge
-            }
-        }, {
+
+        let data = new FormData()
+
+        data.append('image', vtcImageToSend)
+        data.append('name', vtcName)
+        data.append('description', vtcDescription)
+        data.append('main_color', vtcColor)
+        data.append('minimum_age_to_join', vtcMinimumAge)
+                
+        axios.post(`${ROOT_API}/v1/vtcs/create`, data, {
             headers: {
-                'Authorization': `Bearer ${authToken}`
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'multipart/form-data'
             }
         }).then(res => {
             console.log(res.data);

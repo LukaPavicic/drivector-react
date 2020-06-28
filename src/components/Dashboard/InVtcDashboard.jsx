@@ -15,6 +15,7 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import SubjectIcon from '@material-ui/icons/Subject';
 import AdminManageMembers from "./AdminManageMembers";
 import JobsScreen from '../../screens/Authorized/Dashboard/JobsScreen'
+import EventsScreen from '../../screens/Authorized/Dashboard/EventsScreen';
 
 const drawerWidth = 240;
 
@@ -139,6 +140,8 @@ export default function InVtcDashboard(props) {
                 return <UserHome/>;
             case 2:
                 return <JobsScreen vtc={currentUser.vtc} />;
+            case 3: 
+                return <EventsScreen vtc={currentUser.vtc}/>;
             case 8:
                 return <AdminSettings getNewUserData={() => props.refreshUserData()} vtc={currentUser.vtc}/>;
             case 9:
@@ -181,7 +184,7 @@ export default function InVtcDashboard(props) {
                     </ListItemIcon>
                     <ListItemText primary={"Jobs"}/>
                 </ListItem>
-                <ListItem button>
+                <ListItem button className={currentTab===3 ? classes.activeMenuTab : null} onClick={() => setCurrentTab(3)}>
                     <ListItemIcon>
                         <EventIcon/>
                     </ListItemIcon>
